@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DemoWE.Data;
 using DemoWE.Models;
 
+
 namespace DemoWE.Controllers
 {
     public class STasksController : Controller
@@ -54,15 +55,17 @@ namespace DemoWE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TaskID,TaskTitle,TaskDescription,Sfile,Status,StartDate,Deadline,CreatedBy,AssignedTo,Priority")] STask sTask)
+        public async Task<IActionResult> Create([Bind("TaskID,TaskTitle,Priority,TaskDescription,AssignedTo,CreatedBy,Sfile,StartDate,Deadline")] STask sTask)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(sTask.Status))
             {
-                _context.Add(sTask);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                sTask.Status = "DefaultStatus";
             }
-            return View(sTask);
+
+
+            _context.Add(sTask);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: STasks/Edit/5
