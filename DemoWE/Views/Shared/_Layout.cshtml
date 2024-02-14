@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="~/DemoWE.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
+    @* <header>
+            
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DemoWE</a>
@@ -33,7 +34,42 @@
                 </div>
             </div>
         </nav>
-    </header>
+    </header> *@
+
+    <!-- Add a button to open the sidebar -->
+    <button class="openbtn" onclick="openSidebar()">&#9776;</button>
+
+    <!-- Sidebar -->
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+        <!-- Your navigation links go here -->
+        <ul class="navbar-nav flex-grow-1">
+
+            <li class="nav-item">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="https://i.ibb.co/1Mr4GfG/Group.png" alt="Logo" style="max-height:  50px;">
+                </a>
+            </li>
+
+
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </li>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="STasks" asp-action="Index">Tasks</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main content -->
+    <div id="main">
+        <!-- Page content goes here -->
+    </div>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -48,6 +84,79 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        function openSidebar() {
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
+
+        function closeSidebar() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+        }
+    
+    </script>
+
+    <style>
+        /* The sidebar */
+        .sidebar {
+            height: 100%; /* Full-height */
+            width: 0; /* Zero width - change this with JavaScript */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Stay on top */
+            top: 0;
+            left: 0;
+            background-color: snow; /* Black */
+            overflow-x: hidden; /* Disable horizontal scroll */
+            transition: 0.5s; /*  0.5 second transition effect to slide in the sidebar */
+            padding-top: 60px; /* Place content  60px from the top */
+        }
+
+            /* The sidebar links */
+            .sidebar a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+                /* When you mouse over the navigation links, change their color */
+                .sidebar a:hover {
+                    color: #f1f1f1;
+                }
+
+            /* Position and style the close button (top right corner) */
+            .sidebar .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+
+        /* Style for the button that opens the sidebar */
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #111;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+        }
+
+            .openbtn:hover {
+                background-color: #444;
+            }
+
+        /* Style the main content */
+        #main {
+            transition: margin-left .5s; /* If you want a transition effect */
+            padding: 20px;
+        }
+
+    </style>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
