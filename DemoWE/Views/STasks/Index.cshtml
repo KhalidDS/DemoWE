@@ -15,12 +15,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.TaskTitle)
             </th>
-           @*  <th>
-                @Html.DisplayNameFor(model => model.TaskDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sfile)
-            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
@@ -43,41 +37,36 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TaskTitle)
-            </td>
-           @*  <td>
-                @Html.DisplayFor(modelItem => item.TaskDescription)
-            </td> *@
-         @*    <td>
-                @Html.DisplayFor(modelItem => item.Sfile)
-            </td> *@
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Deadline)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AssignedTo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Priority)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TaskID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TaskID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TaskID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @item.StartDate.ToShortDateString()
+                </td>
+                <td>
+                    @item.Deadline.ToShortDateString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AssignedTo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Priority)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TaskID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.TaskID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TaskID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
