@@ -6,6 +6,7 @@ namespace DemoWE.Models
     public class STask
     {
         [Key]
+
         public int TaskID { get; set; }
         public string TaskTitle { get; set; }
         public string TaskDescription { get; set; }

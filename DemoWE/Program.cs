@@ -7,7 +7,10 @@ builder.Services.AddDbContext<DemoWEContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(1);
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,9 +23,10 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Users}/{action=login}/{id?}");
 
 app.Run();

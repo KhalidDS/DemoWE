@@ -55,13 +55,22 @@ namespace DemoWE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TaskID,TaskTitle,Priority,TaskDescription,AssignedTo,CreatedBy,Sfile,StartDate,Deadline")] STask sTask)
+
+      
+
+
+        public async Task<IActionResult> Create([Bind("TaskID,TaskTitle,Priority,TaskDescription,AssignedTo,Sfile,StartDate,Deadline")] STask sTask)
         {
             if (string.IsNullOrEmpty(sTask.Status))
             {
                 sTask.Status = "DefaultStatus";
             }
 
+             // if createdby is not set, set it to 1
+             if (sTask.CreatedBy == 0)
+            {
+                    sTask.CreatedBy = 1;
+                }
 
             _context.Add(sTask);
             await _context.SaveChangesAsync();

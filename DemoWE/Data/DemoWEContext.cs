@@ -15,5 +15,6 @@ namespace DemoWE.Data
         }
 
         public DbSet<DemoWE.Models.STask> STask { get; set; } = default!;
+        public DbSet<DemoWE.Models.User> User { get; set; } = default!;
     }
 }
