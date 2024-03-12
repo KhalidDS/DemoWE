@@ -56,25 +56,21 @@ namespace DemoWE.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-      
 
 
-        public async Task<IActionResult> Create([Bind("TaskID,TaskTitle,Priority,TaskDescription,AssignedTo,Sfile,StartDate,Deadline")] STask sTask)
+
+        public async Task<IActionResult> Create([Bind("TaskID,TaskTitle,Priority,TaskDescription,AssignedTo,CreatedBy,Sfile,StartDate,Deadline")] STask sTask)
         {
             if (string.IsNullOrEmpty(sTask.Status))
             {
                 sTask.Status = "DefaultStatus";
             }
 
-             // if createdby is not set, set it to 1
-             if (sTask.CreatedBy == 0)
-            {
-                    sTask.CreatedBy = 1;
-                }
-
             _context.Add(sTask);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            // Return the created task as a partial view
+            return PartialView("_CreatePartial", new STask());
         }
 
         // GET: STasks/Edit/5

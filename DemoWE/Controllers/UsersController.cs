@@ -31,7 +31,7 @@ namespace DemoWE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> login(string na, string pa)
         {
-            SqlConnection conn1 = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Admin\\Documents\\DemoDB.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True");
+            SqlConnection conn1 = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Seraphic\\Documents\\TestingWE.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True");
             string sql;
             sql = "SELECT * FROM [User] WHERE Username = @Username AND Password = @Password";
             SqlCommand comm = new SqlCommand(sql, conn1);
