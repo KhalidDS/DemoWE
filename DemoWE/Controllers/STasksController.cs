@@ -55,16 +55,9 @@ namespace DemoWE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-
-
-
-        public async Task<IActionResult> Create([Bind("TaskID,TaskTitle,Priority,TaskDescription,AssignedTo,CreatedBy,Sfile,StartDate,Deadline")] STask sTask)
+        public async Task<IActionResult> Create([Bind("TaskID,TaskTitle,Priority,TaskDescription,AssignedTo,CreatedBy,StartDate,Deadline")] STask sTask)
         {
-            if (string.IsNullOrEmpty(sTask.Status))
-            {
-                sTask.Status = "DefaultStatus";
-            }
+            sTask.Status = 0;
 
             _context.Add(sTask);
             await _context.SaveChangesAsync();
@@ -94,7 +87,7 @@ namespace DemoWE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TaskID,TaskTitle,TaskDescription,Sfile,Status,StartDate,Deadline,CreatedBy,AssignedTo,Priority")] STask sTask)
+        public async Task<IActionResult> Edit(int id, [Bind("TaskID,TaskTitle,TaskDescription,Status,StartDate,Deadline,CreatedBy,AssignedTo,Priority")] STask sTask)
         {
             if (id != sTask.TaskID)
             {

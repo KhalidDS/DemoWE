@@ -2,9 +2,10 @@
 
     public enum Status
     {
-       Completed,
+    New,
+    InProgress,
        Declined,
-       InProgress,
+       Completed,
     }
 
 

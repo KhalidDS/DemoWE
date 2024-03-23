@@ -31,7 +31,7 @@ namespace DemoWE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> login(string na, string pa)
         {
-            SqlConnection conn1 = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Seraphic\\Documents\\TestingWE.mdf;Integrated Security=True;Connect Timeout=30;Encrypt=True");
+            SqlConnection conn1 = new SqlConnection("Data Source=SQL9001.site4now.net;Initial Catalog=db_aa6a48_we;User Id=db_aa6a48_we_admin;Password=WorkEvo2024");
             string sql;
             sql = "SELECT * FROM [User] WHERE Username = @Username AND Password = @Password";
             SqlCommand comm = new SqlCommand(sql, conn1);
@@ -42,16 +42,16 @@ namespace DemoWE.Controllers
 
             if (reader.Read())
             {
-                string role = (string)reader["Role"];
+                int role = (int)reader["Role"];
                 string id = Convert.ToString((int)reader["EmployeeNumber"]);
                 HttpContext.Session.SetString("Username", na);
-                HttpContext.Session.SetString("Role", role);
+                HttpContext.Session.SetString("Role", role.ToString());
                 HttpContext.Session.SetString("userid", id);
                 reader.Close();
                 conn1.Close();
-                if (role == "Employee")
+                if (role == 1)
                     return RedirectToAction("Index", "Home");
-                else if (role == "Manager")
+                else if (role == 2)
                     return RedirectToAction("Index", "STasks");
                 else
                     return RedirectToAction("Privacy", "Home");
@@ -62,7 +62,7 @@ namespace DemoWE.Controllers
                 return View();
             }
         }
-
+        
 
 
 

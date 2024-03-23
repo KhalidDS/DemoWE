@@ -54,7 +54,7 @@ namespace DemoWE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RequestID,RequestTitle,RequestDescription,Rfile,Status,StartDate,Deadline,CreatedBy")] Request request)
+        public async Task<IActionResult> Create([Bind("RequestID,RequestTitle,RequestDescription,Status,StartDate,Deadline,CreatedBy")] Request request)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +94,7 @@ namespace DemoWE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RequestID,RequestTitle,RequestDescription,Rfile,Status,StartDate,Deadline,CreatedBy")] Request request)
+        public async Task<IActionResult> Edit(int id, [Bind("RequestID,RequestTitle,RequestDescription,Status,StartDate,Deadline,CreatedBy")] Request request)
         {
             if (id != request.RequestID)
             {
