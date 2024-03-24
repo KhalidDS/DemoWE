@@ -54,7 +54,7 @@ namespace DemoWE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectID,ProjectTitle,ProjectDescription,,StartDate,Deadline,Priority,AssignedDepartmentID,Status")] Project project)
+        public async Task<IActionResult> Create([Bind("ProjectID,ProjectTitle,ProjectDescription,,StartDate,Deadline,Priority,AssignedDepartmentID")] Project project)
         {
             if (ModelState.IsValid)
             {
