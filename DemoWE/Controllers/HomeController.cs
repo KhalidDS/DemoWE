@@ -13,13 +13,13 @@ namespace DemoWE.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Employee()
         {
 
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Admin()
         {
             return View();
         }

@@ -21,9 +21,22 @@ namespace DemoWE.Controllers
         }
 
         // GET: STasks
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? AssignedTo)
         {
-            return View(await _context.STask.ToListAsync());
+            // Get the user ID from the session
+
+
+            string userId = HttpContext.Session.GetString("userid");
+
+            // Convert userId to int
+            int userIdInt = Convert.ToInt32(userId);
+
+            // Retrieve the tasks that match the AssignedTo ID and the user ID
+            var tasks = await _context.STask
+                .Where(t => t.AssignedTo == userIdInt)
+                .ToListAsync();
+
+            return View(tasks);
         }
 
         // GET: STasks/Details/5

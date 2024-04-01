@@ -50,11 +50,11 @@ namespace DemoWE.Controllers
                 reader.Close();
                 conn1.Close();
                 if (role == 1)
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Employee","Home");
                 else if (role == 2)
                     return RedirectToAction("Index", "STasks");
                 else
-                    return RedirectToAction("Privacy", "Home");
+                    return RedirectToAction("Admin", "Home");
             }
             else
             {
@@ -111,7 +111,7 @@ namespace DemoWE.Controllers
         public async Task<IActionResult> Create([Bind("EmployeeNumber,Username,Password,FirstName,LastName,Email,PhoneNumber,DepartmentID")] User user)
         {
             
-                user.Role = "Employee";
+                 user.Role = 1;
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(login));
