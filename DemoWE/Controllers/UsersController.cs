@@ -44,9 +44,11 @@ namespace DemoWE.Controllers
             {
                 int role = (int)reader["Role"];
                 string id = Convert.ToString((int)reader["EmployeeNumber"]);
+                string D_id = Convert.ToString((int)reader["DepartmentID"]);
                 HttpContext.Session.SetString("Username", na);
                 HttpContext.Session.SetString("Role", role.ToString());
                 HttpContext.Session.SetString("userid", id);
+                HttpContext.Session.SetString("DepartmentID", D_id);
                 reader.Close();
                 conn1.Close();
                 if (role == 1)

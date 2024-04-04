@@ -20,9 +20,20 @@ namespace DemoWE.Controllers
         }
 
         // GET: Projects
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? AssignedDepartmentID)
         {
-            return View(await _context.Project_1.ToListAsync());
+            // Get the user ID from the session
+            string DeptID = HttpContext.Session.GetString("DepartmentID");
+
+            // Convert userId to int
+            int userIdInt = Convert.ToInt32(DeptID);
+
+            // Retrieve the tasks that match the AssignedTo ID and the user ID
+            var pt = await _context.Project_1
+                .Where(t => t.AssignedDepartmentID == userIdInt )
+                .ToListAsync();
+
+            return View(pt);
         }
 
         // GET: Projects/Details/5

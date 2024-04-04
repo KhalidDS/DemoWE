@@ -21,11 +21,9 @@ namespace DemoWE.Controllers
         }
 
         // GET: STasks
-        public async Task<IActionResult> Index(int? AssignedTo)
+        public async Task<IActionResult> Index(int? AssignedTo, int? CreatedBy)
         {
             // Get the user ID from the session
-
-
             string userId = HttpContext.Session.GetString("userid");
 
             // Convert userId to int
@@ -33,7 +31,7 @@ namespace DemoWE.Controllers
 
             // Retrieve the tasks that match the AssignedTo ID and the user ID
             var tasks = await _context.STask
-                .Where(t => t.AssignedTo == userIdInt)
+                .Where(t => t.AssignedTo == userIdInt || t.CreatedBy == userIdInt)
                 .ToListAsync();
 
             return View(tasks);

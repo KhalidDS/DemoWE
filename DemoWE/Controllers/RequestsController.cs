@@ -19,10 +19,21 @@ namespace DemoWE.Controllers
             _context = context;
         }
 
-        // GET: Requests
-        public async Task<IActionResult> Index()
+        /// <summary>
+        /// Retrieves the list of requests based on the specified criteria.
+        /// </summary>
+        /// int CreatedBy The ID of the user who created the requests.</param>
+        /// <returns>The list of requests.</returns>
+        public async Task<IActionResult> Index(int? CreatedBy)
         {
-            return View(await _context.Request.ToListAsync());
+            string userId = HttpContext.Session.GetString("userid");
+            int userIdInt = Convert.ToInt32(userId);
+
+            var request = await _context.Request
+                .Where(t => t.CreatedBy == userIdInt || userIdInt == 410001)
+                .ToListAsync();
+
+            return View(request);
         }
 
         // GET: Requests/Details/5

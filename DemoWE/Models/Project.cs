@@ -9,7 +9,8 @@
         public DateTime StartDate { get; set; }
         public DateTime Deadline { get; set; }
         public PriorityLevel Priority { get; set; }
-        public DepartmentNames AssignedDepartmentID { get; set; }
+        /*DepartmentNames*/
+        public int AssignedDepartmentID { get; set; }
         public Status Status { get; set; }
     }
 }
