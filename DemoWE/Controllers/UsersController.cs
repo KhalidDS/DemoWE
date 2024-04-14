@@ -39,7 +39,7 @@ namespace DemoWE.Controllers
             comm.Parameters.AddWithValue("@Password", pa);
             conn1.Open();
             SqlDataReader reader = comm.ExecuteReader();
-
+            
             if (reader.Read())
             {
                 int role = (int)reader["Role"];

@@ -252,6 +252,7 @@ iframe {
 }
 
 .input100 {
+	
   font-family: Poppins-Regular;
   font-size: 16px;
   color: #fff;
@@ -263,6 +264,15 @@ iframe {
   background: transparent;
   padding: 0 5px 0 38px;
 }
+
+	.input100 option {
+		color: black;
+		background: #9152f8;
+		background: -webkit-linear-gradient(bottom, #7579ff, #b224ef);
+		background: -o-linear-gradient(bottom, #7579ff, #b224ef);
+		background: -moz-linear-gradient(bottom, #7579ff, #b224ef);
+		background: linear-gradient(bottom, #7579ff, #b224ef);
+	} 
 
 /*---------------------------------------------*/ 
 .focus-input100 {

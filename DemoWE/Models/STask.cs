@@ -14,6 +14,7 @@ namespace DemoWE.Models
         public Status Status { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime Deadline { get; set; }
+
         public int CreatedBy { get; set; }
         public int AssignedTo { get; set; }
         public PriorityLevel Priority { get; set; }

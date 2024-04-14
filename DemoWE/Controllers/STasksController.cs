@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DemoWE.Data;
 using DemoWE.Models;
+using System.IO;
 
 
 namespace DemoWE.Controllers
@@ -25,7 +26,8 @@ namespace DemoWE.Controllers
         {
             // Get the user ID from the session
             string userId = HttpContext.Session.GetString("userid");
-
+            string username = HttpContext.Session.GetString("Username");
+            ViewBag.name = username;
             // Convert userId to int
             int userIdInt = Convert.ToInt32(userId);
 
@@ -66,8 +68,28 @@ namespace DemoWE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TaskID,TaskTitle,Priority,TaskDescription,sfile,AssignedTo,CreatedBy,StartDate,Deadline")] STask sTask)
+        public async Task<IActionResult> Create(IFormFile file, [Bind("TaskID,TaskTitle,Priority,TaskDescription,AssignedTo,StartDate,Deadline")] STask sTask)
         {
+
+            //file is not working!!
+            if (file != null)
+            {
+                string filename = file.FileName;
+                string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/files"));
+                using (var filestream = new FileStream(Path.Combine(path, filename), FileMode.Create))
+                {
+                    await file.CopyToAsync(filestream);
+                }
+
+                sTask.sfile = filename;
+            }
+            // Get the user ID from the session
+            string userId = HttpContext.Session.GetString("userid");
+
+            // Convert userId to int
+            int userIdInt = Convert.ToInt32(userId);
+
+            sTask.CreatedBy = userIdInt;
             sTask.Status = 0;
 
             _context.Add(sTask);
