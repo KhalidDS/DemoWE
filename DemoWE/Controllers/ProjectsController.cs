@@ -13,10 +13,12 @@ namespace DemoWE.Controllers
     public class ProjectsController : Controller
     {
         private readonly DemoWEContext _context;
+        private readonly DemoWEContext _staskContext;
 
-        public ProjectsController(DemoWEContext context)
+        public ProjectsController(DemoWEContext context, DemoWEContext staskContext)
         {
             _context = context;
+            _staskContext = staskContext;
         }
 
         // GET: Projects
@@ -164,5 +166,13 @@ namespace DemoWE.Controllers
         {
             return _context.Project_1.Any(e => e.ProjectID == id);
         }
+
+        //public IActionResult CreateRedirect()
+        //{
+           
+
+        //    return RedirectToAction("Create", "STasks");
+        //}
+
     }
 }

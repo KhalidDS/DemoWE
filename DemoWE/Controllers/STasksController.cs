@@ -57,7 +57,7 @@ namespace DemoWE.Controllers
             return View(sTask);
         }
 
-        // GET: STasks/Create
+        //GET: STasks/Create
         public IActionResult Create()
         {
             return View();
