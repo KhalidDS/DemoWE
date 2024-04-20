@@ -26,10 +26,16 @@
 
     <div class="form-group">
         <label asp-for="AssignedTo" class="control-label"></label>
-        <input asp-for="AssignedTo" class="form-control" />
+        <select asp-for="AssignedTo" class="form-control">
+            <option value="">-- Select Employee --</option>
+            @foreach (User t in ViewBag.At)
+            {
+                <option value="@t.EmployeeNumber">@t.Username</option>
+            }
+        </select>
         <span asp-validation-for="AssignedTo" class="text-danger"></span>
     </div>
-
+     
     <div class="form-group">
         <label asp-for="sfile" class="control-label"></label>
         <input type="file" id="sfile" class="form-control" name="sfile" />

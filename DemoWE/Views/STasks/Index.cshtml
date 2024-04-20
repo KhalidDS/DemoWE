@@ -11,6 +11,8 @@
     <button id="createButton" class="btn btn-primary">Create New</button>
 </p>
 
+
+
 <table class="table">
     <thead>
         <tr>
@@ -32,8 +34,21 @@
                 <td>@Html.DisplayFor(modelItem => item.Status)</td>
                 <td>@item.StartDate.ToShortDateString()</td>
                 <td>@item.Deadline.ToShortDateString()</td>
-                <td>@Html.DisplayFor(modelItem => item.CreatedBy)</td>
-                <td>@Html.DisplayFor(modelItem => item.AssignedTo)</td>
+                @foreach (User t in ViewBag.At)
+                {
+                    if (t.EmployeeNumber == item.CreatedBy)
+                    {
+                        <td>@t.Username</td>
+                    }
+                }
+                @foreach (User t in ViewBag.At)
+                {
+                    if (t.EmployeeNumber == item.AssignedTo)
+                    {
+                        <td>@t.Username</td>
+                    }
+                }
+            
                 <td>@Html.DisplayFor(modelItem => item.Priority)</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TaskID">Edit</a> |

@@ -208,5 +208,15 @@ namespace DemoWE.Controllers
         {
             return _context.User.Any(e => e.EmployeeNumber == id);
         }
+        public IActionResult Logout()
+        {
+            // Clear session data
+            HttpContext.Session.Clear();
+
+            // Redirect to login page
+            return RedirectToAction("login");
+        }
+
+
     }
 }
