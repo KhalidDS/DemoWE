@@ -24,6 +24,8 @@ namespace DemoWE.Controllers
         // GET: Projects
         public async Task<IActionResult> Index(int? AssignedDepartmentID)
         {
+            var li = await _context.Department.ToListAsync();
+            ViewBag.dep = li;
             // Get the user ID from the session
             string DeptID = HttpContext.Session.GetString("DepartmentID");
 

@@ -52,12 +52,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Deadline)
-            </td>
+                <td>@item.StartDate.ToShortDateString()</td>
+                <td>@item.Deadline.ToShortDateString()</td>
             @* <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
             </td> *@

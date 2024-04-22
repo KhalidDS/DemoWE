@@ -30,10 +30,16 @@
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.ProjectTitle)</td>
                 <td>@Html.DisplayFor(modelItem => item.ProjectDescription)</td>
-                <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.Deadline)</td>
+                <td>@item.StartDate.ToShortDateString()</td>
+                <td>@item.Deadline.ToShortDateString()</td>
                 <td>@Html.DisplayFor(modelItem => item.Priority)</td>
-                <td>@Html.DisplayFor(modelItem => item.AssignedDepartmentID)</td>
+                @foreach (Department d in ViewBag.dep)
+                {
+                    if (d.DepartmentID == item.AssignedDepartmentID)
+                    {
+                        <td>@d.DepartmentName</td>
+                    }
+                }
                 <td>@Html.DisplayFor(modelItem => item.Status)</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ProjectID">Edit</a> |

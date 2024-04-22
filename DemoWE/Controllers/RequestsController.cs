@@ -67,6 +67,13 @@ namespace DemoWE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RequestID,RequestTitle,RequestDescription,rfile,Status,StartDate,CreatedBy,Deadline")] Request request)
         {
+
+            string userId = HttpContext.Session.GetString("userid");
+
+            // Convert userId to int
+            int userIdInt = Convert.ToInt32(userId);
+
+            request.CreatedBy = userIdInt;
             if (ModelState.IsValid)
             {
                 _context.Add(request);
