@@ -24,6 +24,8 @@ namespace DemoWE.Controllers
         // GET: STasks
         public async Task<IActionResult> Index(int? AssignedTo, int? CreatedBy)
         {
+            var li = await _context.User.ToListAsync();
+            ViewBag.At = li;
             // Get the user ID from the session
             string userId = HttpContext.Session.GetString("userid");
             string username = HttpContext.Session.GetString("Username");
@@ -57,7 +59,7 @@ namespace DemoWE.Controllers
             return View(sTask);
         }
 
-        // GET: STasks/Create
+        //GET: STasks/Create
         public IActionResult Create()
         {
             return View();
@@ -70,7 +72,7 @@ namespace DemoWE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(IFormFile file, [Bind("TaskID,TaskTitle,Priority,TaskDescription,AssignedTo,StartDate,Deadline")] STask sTask)
         {
-
+      
             //file is not working!!
             if (file != null)
             {
@@ -94,7 +96,8 @@ namespace DemoWE.Controllers
 
             _context.Add(sTask);
             await _context.SaveChangesAsync();
-
+            var li = await _context.User.ToListAsync();
+            ViewBag.At = li;
             // Return the created task as a partial view
             return PartialView("_CreatePartial", new STask());
         }
@@ -112,6 +115,8 @@ namespace DemoWE.Controllers
             {
                 return NotFound();
             }
+            var li = await _context.User.ToListAsync();
+            ViewBag.At = li;
             return View(sTask);
         }
 

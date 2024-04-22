@@ -25,19 +25,10 @@
 
     <div class="form-group">
         <label asp-for="AssignedTo" class="control-label"></label>
-        <div id="assignedToContainer">
-            <select asp-for="AssignedTo" class="form-control">
-                <option value="">-- Select Employee --</option>
-                @foreach (User t in ViewBag.At)
-                {
-                    <option value="@t.EmployeeNumber">@t.Username</option>
-                }
-            </select>
-        </div>
-        <button type="button" id="addAssignedTo" class="btn btn-primary">Add</button>
+        <input asp-for="AssignedTo" class="form-control" />
         <span asp-validation-for="AssignedTo" class="text-danger"></span>
     </div>
-     
+
     <div class="form-group">
         <label asp-for="sfile" class="control-label"></label>
         <input type="file" id="sfile" class="form-control" name="sfile" />
@@ -66,12 +57,6 @@
         <span asp-validation-for="Deadline" class="text-danger"></span>
     </div>
 
-    @*  <div class="form-group">
-        <label asp-for="CreatedBy" class="control-label"></label>
-        <input asp-for="CreatedBy" class="form-control" />
-        <span asp-validation-for="CreatedBy" class="text-danger"></span>
-    </div> *@
-
     <br />
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-primary" />
@@ -94,19 +79,4 @@
             dateInput.value = "";
         }
     }
-
-    document.getElementById("addAssignedTo").addEventListener("click", function() {
-        var assignedToContainer = document.getElementById("assignedToContainer");
-        var selectElement = document.createElement("select");
-        selectElement.className = "form-control";
-        selectElement.name = "AssignedTo";
-        selectElement.innerHTML = `
-            <option value="">-- Select Employee --</option>
-            @foreach (User t in ViewBag.At)
-            {
-                <option value="@t.EmployeeNumber">@t.Username</option>
-            }
-        `;
-        assignedToContainer.appendChild(selectElement);
-    });
 </script>

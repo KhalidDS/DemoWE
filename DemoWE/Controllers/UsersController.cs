@@ -31,7 +31,7 @@ namespace DemoWE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> login(string na, string pa)
         {
-            SqlConnection conn1 = new SqlConnection("Data Source=SQL9001.site4now.net;Initial Catalog=db_aa6a48_we;User Id=db_aa6a48_we_admin;Password=WorkEvo2024");
+            SqlConnection conn1 = new SqlConnection("Data Source=SQL6031.site4now.net;Initial Catalog=db_aa7de3_t10;User Id=db_aa7de3_t10_admin;Password=A$d12345");
             string sql;
             sql = "SELECT * FROM [User] WHERE Username = @Username AND Password = @Password";
             SqlCommand comm = new SqlCommand(sql, conn1);
@@ -208,5 +208,15 @@ namespace DemoWE.Controllers
         {
             return _context.User.Any(e => e.EmployeeNumber == id);
         }
+        public IActionResult Logout()
+        {
+            // Clear session data
+            HttpContext.Session.Clear();
+
+            // Redirect to login page
+            return RedirectToAction("login");
+        }
+
+
     }
 }

@@ -30,15 +30,23 @@
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.ProjectTitle)</td>
                 <td>@Html.DisplayFor(modelItem => item.ProjectDescription)</td>
-                <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.Deadline)</td>
+                <td>@item.StartDate.ToShortDateString()</td>
+                <td>@item.Deadline.ToShortDateString()</td>
                 <td>@Html.DisplayFor(modelItem => item.Priority)</td>
-                <td>@Html.DisplayFor(modelItem => item.AssignedDepartmentID)</td>
+                @foreach (Department d in ViewBag.dep)
+                {
+                    if (d.DepartmentID == item.AssignedDepartmentID)
+                    {
+                        <td>@d.DepartmentName</td>
+                    }
+                }
                 <td>@Html.DisplayFor(modelItem => item.Status)</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ProjectID">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.ProjectID">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.ProjectID">Delete</a>
+                    <a asp-action="CreateRedirect" asp-route-id="@item.ProjectID">Create Task</a>
+
                 </td>
             </tr>
         }

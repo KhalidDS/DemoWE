@@ -17,6 +17,9 @@ namespace DemoWE.Models
 
         public int CreatedBy { get; set; }
         public int AssignedTo { get; set; }
+
+        //public User AssignedToUser { get; set; } // Reference to the User model
+        //public string AssignedToUsername => AssignedToUser?.Username;
         public PriorityLevel Priority { get; set; }
 
     }

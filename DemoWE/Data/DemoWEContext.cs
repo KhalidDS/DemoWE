@@ -19,6 +19,7 @@ namespace DemoWE.Data
         public DbSet<DemoWE.Models.Request> Request { get; set; } = default!;
         public DbSet<DemoWE.Models.Project> Project { get; set; } = default!;
         public DbSet<DemoWE.Models.Project> Project_1 { get; set; } = default!;
+        public DbSet<DemoWE.Models.Department> Department { get; set; } = default!;
 
     }
 }

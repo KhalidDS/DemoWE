@@ -24,7 +24,7 @@
     <div class="form-group">
         <label asp-for="StartDate" class="control-label"></label>
         <div class="input-group">
-            <input asp-for="StartDate" class="form-control" type="date" />
+            <input asp-for="StartDate" class="form-control" type="date" value="" />
             <div class="input-group-append">
                 <label class="input-group-text">
                     <input type="checkbox" id="startImmediately" onclick="handleStartDate()">
@@ -37,8 +37,8 @@
 
     <div class="form-group">
         <label asp-for="Deadline" class="control-label"></label>
-        <input asp-for="Deadline" class="form-control" type="date" />
-        <span asp-validation-for="Deadline" class="text-danger"></span>
+        <input asp-for="Deadline" class="form-control" type="date" value="" />
+        <span asp-validation-for="Deadline" class="text-danger" ></span>
     </div>
 
     <div class="form-group">
@@ -65,14 +65,18 @@
 </form>
 
 <script>
-    function handleStartDate(id) {
+    function handleStartDate() {
         var checkbox = document.getElementById("startImmediately");
         var dateInput = document.getElementById("StartDate");
 
         if (checkbox.checked) {
+            // Get the current system date in ISO 8601 format (year-month-day)
             var currentDate = new Date().toISOString().slice(0, 10);
+
+            // Set the date input value to the current date
             dateInput.value = currentDate;
         } else {
+            // Clear the date input value if unchecked
             dateInput.value = "";
         }
     }
