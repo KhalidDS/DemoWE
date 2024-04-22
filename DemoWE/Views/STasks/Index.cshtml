@@ -38,14 +38,14 @@
                 {
                     if (t.EmployeeNumber == item.CreatedBy)
                     {
-                        <td>@t.Username</td>
+                        <td>@t.FirstName</td>
                     }
                 }
                 @foreach (User t in ViewBag.At)
                 {
                     if (t.EmployeeNumber == item.AssignedTo)
                     {
-                        <td>@t.Username</td>
+                        <td>@t.FirstName</td>
                     }
                 }
             
