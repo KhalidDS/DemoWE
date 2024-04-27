@@ -65,16 +65,6 @@ namespace DemoWE.Controllers
             }
         }
         
-
-
-
-
-
-
-
-
-
-
         // GET: Users
         public async Task<IActionResult> Index()
         {
@@ -217,6 +207,57 @@ namespace DemoWE.Controllers
             return RedirectToAction("login");
         }
 
+		// GET: Users/ForgotPassword
+		public IActionResult ForgotPassword()
+		{
+			return View();
+		}
 
+        // POST: Users/ResetPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(string email, string employeeNumber)
+        {
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Email == email && u.EmployeeNumber.ToString() == employeeNumber);
+            if (user == null)
+            {
+                // User not found with the provided email or employee number
+                ViewData["Message"] = "Email address or employee number is incorrect";
+                return View("ForgotPassword");
+            }
+
+            // Allow the user to reset the password, perhaps by redirecting to a page where they can set a new password
+            return RedirectToAction("SetNewPassword", new { userId = user.EmployeeNumber });
+        }
+
+        // GET: Users/SetNewPassword
+        public async Task<IActionResult> SetNewPassword(int userId)
+        {
+            var user = await _context.User.FindAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        // POST: Users/SetNewPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetNewPassword(int userId, string newPassword)
+        {
+            var user = await _context.User.FindAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Password = newPassword;
+            await _context.SaveChangesAsync();
+
+            // Redirect to the login page after setting the new password
+            return RedirectToAction("login");
+        }
     }
 }
