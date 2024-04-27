@@ -8,6 +8,7 @@ namespace DemoWE.Models
         [Key]
 
         public int TaskID { get; set; }
+        public int? project_id { get; set; }
         public string TaskTitle { get; set; }
         public string TaskDescription { get; set; }
         public string? sfile { get; set; }

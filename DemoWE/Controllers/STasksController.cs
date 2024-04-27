@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DemoWE.Data;
 using DemoWE.Models;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 
 namespace DemoWE.Controllers
@@ -27,17 +28,31 @@ namespace DemoWE.Controllers
             var li = await _context.User.ToListAsync();
             ViewBag.At = li;
             // Get the user ID from the session
+            await HttpContext.Session.LoadAsync();
             string userId = HttpContext.Session.GetString("userid");
+            await HttpContext.Session.LoadAsync();
             string username = HttpContext.Session.GetString("Username");
+            await HttpContext.Session.LoadAsync();
+            string deptId = HttpContext.Session.GetString("DepartmentID");
+            await HttpContext.Session.LoadAsync();
+            string role = HttpContext.Session.GetString("Role");
             ViewBag.name = username;
+            
             // Convert userId to int
             int userIdInt = Convert.ToInt32(userId);
+            int deptIdInt = Convert.ToInt32(deptId);
+            int roleInt = Convert.ToInt32(role);
 
+            ViewBag.Role = roleInt;
+            ViewBag.userid = userIdInt;
             // Retrieve the tasks that match the AssignedTo ID and the user ID
             var tasks = await _context.STask
-                .Where(t => t.AssignedTo == userIdInt || t.CreatedBy == userIdInt)
-                .ToListAsync();
-
+            .Where(t => (t.AssignedTo == userIdInt || t.CreatedBy == userIdInt) && t.project_id == null)
+            .ToListAsync();
+            var di = await _context.User
+              .Where(t => t.DepartmentID == deptIdInt)
+              .ToListAsync();
+            ViewBag.dt = di;
             return View(tasks);
         }
 
@@ -70,9 +85,8 @@ namespace DemoWE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormFile file, [Bind("TaskID,TaskTitle,Priority,TaskDescription,AssignedTo,StartDate,Deadline")] STask sTask)
+        public async Task<IActionResult> Create(IFormFile file, [Bind("TaskID,TaskTitle,Priority,TaskDescription,AssignedTo,project_id,StartDate,Deadline")] STask sTask)
         {
-      
             //file is not working!!
             if (file != null)
             {
@@ -85,8 +99,20 @@ namespace DemoWE.Controllers
 
                 sTask.sfile = filename;
             }
+
             // Get the user ID from the session
+            await HttpContext.Session.LoadAsync();
             string userId = HttpContext.Session.GetString("userid");
+
+            // Get the project ID from the session
+            await HttpContext.Session.LoadAsync();
+            int? projectId = HttpContext.Session.GetInt32("ProjectID");
+
+            // Use the projectIDValue as needed
+            if (projectId.HasValue)
+            {
+                sTask.project_id = projectId.Value;
+            }
 
             // Convert userId to int
             int userIdInt = Convert.ToInt32(userId);
@@ -95,11 +121,17 @@ namespace DemoWE.Controllers
             sTask.Status = 0;
 
             _context.Add(sTask);
+
             await _context.SaveChangesAsync();
-            var li = await _context.User.ToListAsync();
-            ViewBag.At = li;
-            // Return the created task as a partial view
-            return PartialView("_CreatePartial", new STask());
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         // GET: STasks/Edit/5

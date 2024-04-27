@@ -27,6 +27,7 @@ namespace DemoWE.Controllers
             var li = await _context.Department.ToListAsync();
             ViewBag.dep = li;
             // Get the user ID from the session
+            await HttpContext.Session.LoadAsync();
             string DeptID = HttpContext.Session.GetString("DepartmentID");
 
             // Convert userId to int
@@ -43,13 +44,27 @@ namespace DemoWE.Controllers
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+             await HttpContext.Session.LoadAsync();
+            string deptId = HttpContext.Session.GetString("DepartmentID");
+
+            int deptIdInt = Convert.ToInt32(deptId);
+            var li = await _context.User.ToListAsync();
+            ViewBag.At = li;
+            var di = await _context.User
+            .Where(t => t.DepartmentID == deptIdInt)
+            .ToListAsync();
+            ViewBag.dt = di;
             if (id == null)
             {
                 return NotFound();
             }
 
+            // Store the ID in session
+            HttpContext.Session.SetInt32("ProjectID", id.Value);
+
             var project = await _context.Project_1
                 .FirstOrDefaultAsync(m => m.ProjectID == id);
+
             if (project == null)
             {
                 return NotFound();

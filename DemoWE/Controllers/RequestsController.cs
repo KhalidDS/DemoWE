@@ -26,6 +26,7 @@ namespace DemoWE.Controllers
         /// <returns>The list of requests.</returns>
         public async Task<IActionResult> Index(int? CreatedBy)
         {
+            await HttpContext.Session.LoadAsync();
             string userId = HttpContext.Session.GetString("userid");
             int userIdInt = Convert.ToInt32(userId);
 
@@ -67,7 +68,7 @@ namespace DemoWE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RequestID,RequestTitle,RequestDescription,rfile,Status,StartDate,CreatedBy,Deadline")] Request request)
         {
-
+            await HttpContext.Session.LoadAsync();
             string userId = HttpContext.Session.GetString("userid");
 
             // Convert userId to int

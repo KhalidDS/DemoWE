@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DemoWE.Controllers
 {
+
     public class HomeController : Controller
     {
         private readonly DemoWEContext _context;
@@ -21,6 +22,7 @@ namespace DemoWE.Controllers
 
         public IActionResult Employee()
         {
+            
             string username = HttpContext.Session.GetString("Username");
             ViewBag.name = username;
 
@@ -39,8 +41,10 @@ namespace DemoWE.Controllers
         }
 
         [HttpPost]
+
         public List<object> GetData(int? AssignedTo, int? CreatedBy)
         {
+
             string userId = HttpContext.Session.GetString("userid");
             int userIdInt = Convert.ToInt32(userId);
             List<object> Data = new List<object>();
