@@ -219,10 +219,11 @@ namespace DemoWE.Controllers
         public async Task<IActionResult> ResetPassword(string email, string employeeNumber)
         {
             var user = await _context.User.FirstOrDefaultAsync(u => u.Email == email && u.EmployeeNumber.ToString() == employeeNumber);
+
             if (user == null)
             {
-                // User not found with the provided email or employee number
-                ViewData["Message"] = "Email address or employee number is incorrect";
+                // Display error message for account not found
+                ViewData["ErrorMessage"] = "Account not found or email and employee number do not match.";
                 return View("ForgotPassword");
             }
 
