@@ -28,7 +28,11 @@
               background: -webkit-linear-gradient(top, #7579ff, #b224ef);
               background: -o-linear-gradient(top, #7579ff, #b224ef);
               background: -moz-linear-gradient(top, #7579ff, #b224ef);
-              background: linear-gradient(top, #7579ff, #b224ef);"></div>
+              background: linear-gradient(top, #7579ff, #b224ef);">
+          <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                   @ViewBag.DepartmentName Department
+               </div>
+          </div>
 
 <div style="position: absolute; top:55%; left: 20%; transform: translateX(-50%); border-radius: 10px; width:20%; height:  15%; padding: 10px; color: white; font-size: 30px;
             background: #9152f8;
@@ -37,13 +41,66 @@
               background: -moz-linear-gradient(top, #7579ff, #b224ef);
               background: linear-gradient(top, #7579ff, #b224ef);"></div>
 
-<div style="position: absolute; top:35%; left:82%; transform: translateX(-50%);  border-radius: 10px; width:15%; height:  35%; padding: 10px; color: white; font-size: 30px;
+<div id="taskDataContainer" style=" position: absolute; top:35%; left:82%; transform: translateX(-50%); border-radius: 10px; width:15%; height: 35%; padding: 10px; color: white; font-size: 25px;
             background: #9152f8;
               background: -webkit-linear-gradient(top, #7579ff, #b224ef);
               background: -o-linear-gradient(top, #7579ff, #b224ef);
               background: -moz-linear-gradient(top, #7579ff, #b224ef);
-              background: linear-gradient(top, #7579ff, #b224ef);"></div>
+              background: linear-gradient(top, #7579ff, #b224ef);
+                justify-content: center;align-items: center;">
 
+    @section scripts {
+        <script>
+            $(document).ready(function () {
+                $.ajax({
+                    url: '@Url.Action("TData", "Home")',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        var taskTitles = data[0];
+                        var statuses = data[1];
+
+                        var container = $('#taskDataContainer');
+                        for (var i = 0; i < taskTitles.length; i++) {
+                            var div = $('<br/><div></div>').addClass('task-item');
+                            div.append('<span>' + taskTitles[i] + '</span>');
+                            var statusSpan = $('<span>' + statuses[i] + '</span>');
+                            if (statuses[i] === "Completed") {
+                                statusSpan.addClass('completed');
+                            } else if (statuses[i] === "Declined") {
+                                statusSpan.addClass('declined');
+                            }
+                            div.append(statusSpan);
+                            container.append(div);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error: ' + error);
+                    }
+                });
+            });
+        </script>
+    }
+</div>
+<style>
+    .task-item {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px; /* Adjust spacing between items */
+    }
+
+        .task-item span {
+            margin: 0 5px; /* Adjust spacing between title and status */
+        }
+
+    .completed {
+        color: green; /* Set text color to green for Completed status */
+    }
+
+    .declined {
+        color: red; /* Set text color to red for Declined status */
+    }
+</style>
 <div style="position: absolute; top:35%; right: 60px; left:35%; width:35%; height:35%;  border-radius: 10px;padding: 25px;
             background: #9152f8;
               background: -webkit-linear-gradient(top, #7579ff, #b224ef);
@@ -113,11 +170,7 @@
                     }]
                 },
                 options: {
-                    plugins: {
-                        legend: {
-                            display: false,
-                        }
-                    },
+                   
                     indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
@@ -172,43 +225,7 @@
                 }
             });
 
-            // Add lines for each task
-            var ctx = document.getElementById("myChart").getContext("2d");
-            var chart = new Chart(ctx, {
-                type: "line",
-                data: {
-                    labels: _chartLabels,
-                    datasets: [{
-                        label: "Tasks",
-                        data: [_StartData, _DeadData],
-                        borderColor: "rgba(0, 0, 0, 0.5)",
-                        borderWidth: 1,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            type: 'time',
-                            time: {
-                                unit: 'day',
-                            },
-                            ticks: {
-                                color: 'white' // Set the color of the x-axis labels to white
-                            },
-                            position: 'top'
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: 'white' // Set the color of the y-axis labels to white
-                            }
-                        }
-                    }
-                }
-            });
+           
         }
 
         function OnError(err) {
@@ -216,3 +233,46 @@
         }
     });
 </script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', { packages: ['timeline'] }); // Load the timeline package
+
+    google.charts.setOnLoadCallback(initialize); // Set callback to initialize function
+
+    function initialize() {
+        var opts = { sendMethod: 'auto' };
+        // Replace the data source URL on next line with your data source URL.
+        var query = new google.visualization.Query('Data Source=SQL6031.site4now.net;Initial Catalog=db_aa7de3_t10;User Id=db_aa7de3_t10_admin;Password=A$d12345', opts);
+
+        // Optional request to return only column C and the sum of column B, grouped by C members.
+        query.setQuery('select TaskTitle, StartDate, Deadline from STask ');
+
+        // Send the query with a callback function.
+        query.send(handleQueryResponse);
+    }
+
+    function handleQueryResponse(response) {
+        if (response.isError()) {
+            alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+            return;
+        }
+
+        var container = document.getElementById('example2');
+        var chart = new google.visualization.Timeline(container);
+        var dataTable = new google.visualization.DataTable();
+
+        dataTable.addColumn({ type: 'string', id: 'Term' });
+        dataTable.addColumn({ type: 'string', id: 'Name' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+
+        // Replace this part with your data query response
+        var queryResponseData = response.getDataTable();
+
+        // Add rows from the query response data
+        dataTable.addRows(queryResponseData);
+
+        chart.draw(dataTable);
+    }
+</script> 
