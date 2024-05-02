@@ -4,20 +4,47 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-<h3>hello, @ViewBag.name</h3>
+<head>
+
+  
+    <link rel="stylesheet"href="/css/table.css" />
+ 
+ 
+</head>
+
+<style>
+    .btn {
+        background-color: #D8D8D8;
+        border: none;
+        color: black;
+        padding: 12px 12px;
+        text-align: center;
+        font-size: 11px;
+        margin: 1px 1px;
+        opacity: 0.6;
+        transition: 0.3s;
+        width: 100px;
+        
+    }
+        .btn:hover {
+            opacity: 1
+            
+        }
+</style>
+<h2>@ViewBag.name Tasks </h2>
+
 <p>
     <!-- Link to trigger modal removed -->
    @*  @if (ViewBag.Role == 2)
     { *@
-        <button id="createButton" class="btn btn-primary">Create New</button>
+       
 
     @* }  *@
 </p>
 
 
 
-<table class="table">
+<table>
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model.TaskTitle)</th>
@@ -27,7 +54,7 @@
             <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
             <th>@Html.DisplayNameFor(model => model.AssignedTo)</th>
             <th>@Html.DisplayNameFor(model => model.Priority)</th>
-            <th></th>
+            <th> <button id="createButton" class="btn" style="font-size: 15px;">Create</button></th>
         </tr>
     </thead>
     <tbody>
@@ -54,15 +81,25 @@
                 }
             
                 <td>@Html.DisplayFor(modelItem => item.Priority)</td>
-                <td>
+  
                     <td>
-                        @if (ViewBag.Role != 1 || item.CreatedBy == ViewBag.userid)
-                        {
-                            <a asp-action="Edit" asp-route-id="@item.TaskID">Edit</a>
-                           
-                        }
-                        <a asp-action="Details" asp-route-id="@item.TaskID">Details</a>
-               
+                       
+                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                        <div class="btn-group" role="group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Option</button>
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                @if (ViewBag.Role != 1 || item.CreatedBy == ViewBag.userid)
+                                {
+                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.TaskID">Edit</a>
+
+                                }
+                                <a class="dropdown-item" asp-action="Details" asp-route-id="@item.TaskID">Details</a>
+
+                            </div>
+                        </div>
+                    </div>
+               </td>
+   
             </tr>
         }
     </tbody>
