@@ -246,7 +246,7 @@
         var query = new google.visualization.Query('Data Source=SQL6031.site4now.net;Initial Catalog=db_aa7de3_t10;User Id=db_aa7de3_t10_admin;Password=A$d12345', opts);
 
         // Optional request to return only column C and the sum of column B, grouped by C members.
-        query.setQuery('select TaskTitle, StartDate, Deadline from STask ');
+        query.setQuery('select CreatedBy, MONTH(CreatedDate) as Month, COUNT(*) as TaskCount from STask group by CreatedBy, MONTH(CreatedDate)');
 
         // Send the query with a callback function.
         query.send(handleQueryResponse);
@@ -275,4 +275,4 @@
 
         chart.draw(dataTable);
     }
-</script> 
+</script>

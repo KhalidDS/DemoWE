@@ -22,11 +22,13 @@ namespace DemoWE.Controllers
 
         public async Task<IActionResult> Employee(string? DepartmentID)
         {
-
+            await HttpContext.Session.LoadAsync();
             string userId = HttpContext.Session.GetString("userid");
             int userIdInt = Convert.ToInt32(userId);
+            await HttpContext.Session.LoadAsync();
             string username = HttpContext.Session.GetString("Username") ?? string.Empty;
             ViewBag.name = username;
+            await HttpContext.Session.LoadAsync();
             string DeptID = HttpContext.Session.GetString("DepartmentID") ?? string.Empty;
             ViewBag.Department = DeptID;
             string DepartmentName = string.Empty; // Initialize DepartmentName variable
@@ -53,7 +55,7 @@ namespace DemoWE.Controllers
         [HttpPost]
         public List<object> GetData(int? AssignedTo, int? CreatedBy)
         {
-
+          
             string userId = HttpContext.Session.GetString("userid");
             int userIdInt = Convert.ToInt32(userId);
             List<object> Data = new List<object>();
