@@ -113,11 +113,14 @@
 </div>
 
 <br />
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
-<script type="text/javascript">
-
+<script>
     $(function () {
         function getCurrentTime() {
             var currentTime = new Date();
@@ -143,45 +146,51 @@
         $.ajax({
             type: "POST",
             url: "/Home/GetData",
-            data: "",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: OnSuccessResult,
-            error: OnError
+            success: function (data) {
+                OnSuccessResult(data);
+            },
+            error: function (xhr, status, error) {
+                OnError(error);
+            }
         });
-
         function OnSuccessResult(data) {
             var _data = data;
             var _chartLabels = _data[0];
-            var _StartData = _data[1];
-            var _DeadData = _data[2];
+            var _StartData = _data[1].map(date => new Date(date)); // Convert to Date object
+            var _DeadData = _data[2].map(date => new Date(date)); // Convert to Date object
 
-            var barColor = ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "grey", "black"];
+            var lineColor = 'rgba(0, 0, 0, 0.5)';
+
+            // Calculate the midpoint between start and deadline
+            var startTimestamp = _StartData.reduce((acc, curr) => acc + curr.getTime(), 0) / _StartData.length;
+            var deadTimestamp = _DeadData.reduce((acc, curr) => acc + curr.getTime(), 0) / _DeadData.length;
+            var midpoint = new Date((startTimestamp + deadTimestamp) / 2);
+
+            var currentTime = new Date(); // Current time
 
             new Chart("myChart", {
-                type: "bar",
+                type: "line",
                 data: {
                     labels: _chartLabels,
                     datasets: [{
                         label: "Tasks",
-                        data: [_StartData, _DeadData],
-                        backgroundColor: barColor,
-                        borderWidth: 1,
-                        borderRadius: 4,
-                        borderSkipped: false
+                        data: _StartData.map(date => ({ x: date, y: 0 })).concat(_DeadData.map(date => ({ x: date, y: 1 }))),
+                        borderColor: lineColor,
+                        borderWidth: 2,
+                        fill: false
                     }]
                 },
                 options: {
-                   
                     indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        position: 'top',
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                color: 'white' // Set the color of the y-axis labels to white
+                                color: 'white'
                             }
                         },
                         x: {
@@ -190,9 +199,12 @@
                                 unit: 'day',
                             },
                             ticks: {
-                                color: 'white' // Set the color of the y-axis labels to white
+                                color: 'white'
                             },
-                            position: 'top'
+                            min: _StartData[0], // Set minimum x-axis value
+                            max: _DeadData[_DeadData.length - 1], // Set maximum x-axis value
+                            minRotation: 0,
+                            maxRotation: 0
                         }
                     },
                     plugins: {
@@ -201,33 +213,45 @@
                                 type: 'line',
                                 mode: 'vertical',
                                 scaleID: 'x',
-                                value: new Date(_StartData),
-                                borderColor: 'rgba(255, 0, 0, 0.5)',
+                                value: currentTime,
+                                borderColor: 'red',
                                 borderWidth: 2,
                                 label: {
-                                    content: 'Start Date',
+                                    content: 'Current Time',
                                     enabled: true,
-                                    position: 'top'
+                                    position: 'top',
+                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                    font: {
+                                        size: 12
+                                    },
+                                    labelOffset: {
+                                        y: 20 // Adjust the vertical offset as needed
+                                    }
                                 }
                             }, {
                                 type: 'line',
                                 mode: 'vertical',
                                 scaleID: 'x',
-                                value: new Date(_DeadData),
-                                borderColor: 'rgba(0, 0, 255, 0.5)',
+                                value: midpoint,
+                                borderColor: lineColor,
                                 borderWidth: 2,
                                 label: {
-                                    content: 'Deadline',
+                                    content: 'Midpoint',
                                     enabled: true,
-                                    position: 'top'
+                                    position: 'top',
+                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                    font: {
+                                        size: 12
+                                    },
+                                    labelOffset: {
+                                        y: 20 // Adjust the vertical offset as needed
+                                    }
                                 }
                             }]
                         }
                     }
                 }
             });
-
-           
         }
 
         function OnError(err) {
@@ -235,6 +259,7 @@
         }
     });
 </script>
+
 @* 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -278,3 +303,81 @@
         chart.draw(dataTable);
     }
 </script> *@
+
+      @*   function OnSuccessResult(data) {
+            var _data = data;
+            var _chartLabels = _data[0];
+            var _StartData = _data[1].map(date => new Date(date)); // Convert to Date object
+            var _DeadData = _data[2].map(date => new Date(date)); // Convert to Date object
+
+            var lineColors = ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "grey", "black"]; // Define line colors
+
+            var datasets = []; // Initialize array to store datasets
+
+            for (var i = 0; i < _StartData.length; i++) {
+                var taskData = [{ x: _StartData[i], y: i }, { x: _DeadData[i], y: i }]; // Data for each task
+                datasets.push({
+                    label: "Task " + (i + 1),
+                    data: taskData,
+                    borderColor: lineColors[i % lineColors.length], // Cycle through line colors
+                    borderWidth: 2,
+                    fill: false
+                });
+            }
+
+            var annotations = []; // Initialize array to store annotations
+
+            for (var i = 0; i < _StartData.length; i++) {
+                annotations.push({
+                    type: 'line',
+                    mode: 'horizontal',
+                    scaleID: 'y',
+                    value: i, // Set the y-value to match the y-level of the task
+                    borderColor: lineColors[i % lineColors.length], // Use the same color as the corresponding line
+                    borderWidth: 2
+                });
+            }
+
+            var chartData = {
+                labels: _chartLabels,
+                datasets: datasets // Assign datasets array
+            };
+
+            var chartOptions = {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: 'white'
+                        }
+                    },
+                    x: {
+                        type: 'time',
+                        time: {
+                            unit: 'day',
+                        },
+                        ticks: {
+                            color: 'white'
+                        },
+                        min: _StartData[0], // Set minimum x-axis value
+                        max: _DeadData[_DeadData.length - 1], // Set maximum x-axis value
+                        minRotation: 0,
+                        maxRotation: 0
+                    }
+                },
+                plugins: {
+                    annotation: {
+                        annotations: annotations // Assign annotations array
+                    }
+                }
+            };
+
+            var myChart = new Chart("myChart", {
+                type: "line",
+                data: chartData,
+                options: chartOptions
+            });
+        } *@

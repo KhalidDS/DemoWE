@@ -76,11 +76,16 @@ namespace DemoWE.Controllers
             int userIdInt = Convert.ToInt32(userId);
             List<object> Data = new List<object>();
 
-            List<string> labels = _context.STask.Where(x => x.AssignedTo == userIdInt).Select(x => x.TaskTitle).ToList();
+            // Retrieve task titles
+            List<string> labels = _context.STask.Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress)).Select(x => x.TaskTitle).ToList();
             Data.Add(labels);
-            List<DateTime> StartDate = _context.STask.Where(x => x.AssignedTo == userIdInt).Select(x => x.StartDate).ToList();
+
+            // Retrieve start dates
+            List<DateTime> StartDate = _context.STask.Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress)).Select(x => x.StartDate.Date).ToList();
             Data.Add(StartDate);
-            List<DateTime> Deadline = _context.STask.Where(x => x.AssignedTo == userIdInt).Select(x => x.Deadline).ToList();
+
+            // Retrieve deadlines
+            List<DateTime> Deadline = _context.STask.Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress)).Select(x => x.Deadline.Date).ToList();
             Data.Add(Deadline);
 
             return Data;
