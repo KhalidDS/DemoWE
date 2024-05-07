@@ -4,8 +4,8 @@
     {
     New,
     InProgress,
-       Declined,
-       Completed,
+    Declined,
+    Completed,
     }
 
 
