@@ -5,6 +5,30 @@
 }
 <head>
 
+
+    <link rel="stylesheet" href="/css/table.css" />
+
+
+</head>
+
+<style>
+    .btn {
+        background-color: #D8D8D8;
+        border: none;
+        color: black;
+        padding: 12px 12px;
+        text-align: center;
+        font-size: 11px;
+        margin: 1px 1px;
+        opacity: 0.6;
+        transition: 0.3s;
+        width: 100px;
+    }
+
+        .btn:hover {
+            opacity: 1
+        }
+</style>
 <h1>Index</h1>
 <p>
     <!-- Link to trigger modal removed -->
@@ -60,12 +84,21 @@
             @Html.DisplayFor(modelItem => item.CreatedBy)
             </td> *@
             <td>
-                <a asp-action="Edit" asp-route-id="@item.RequestID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RequestID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RequestID">Delete</a>
+               <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Option</button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+                                <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.RequestID">Edit</a>
+                                <a class="dropdown-item" asp-action="Details" asp-route-id="@item.RequestID">Details</a>
+                                <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.RequestID">Delete</a>
+                </div>
+            </div>
+        </div>
             </td>
         </tr>
 }
+       
     </tbody>
 </table>
 
