@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DemoWE.Data;
 using DemoWE.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace DemoWE.Controllers
 {
@@ -31,9 +32,13 @@ namespace DemoWE.Controllers
             await HttpContext.Session.LoadAsync();
             string userId = HttpContext.Session.GetString("userid");
             int userIdInt = Convert.ToInt32(userId);
-
+        
             // Retrieve the user's information from the database
             var user = await _context.User.FindAsync(userIdInt);
+            await HttpContext.Session.LoadAsync();
+            string role = HttpContext.Session.GetString("Role");
+            int roleInt = Convert.ToInt32(role);
+            
 
             IQueryable<Request> requests;
 
@@ -43,10 +48,20 @@ namespace DemoWE.Controllers
                 // If the user is a manager, filter requests by their department ID
                 requests = _context.Request.Where(t => t.AssignedDepartmentID == user.DepartmentID);
             }
+            else if (user.Role == 1)
+            {
+                // If the user is not a manager but has role 1, filter requests by the user who created them
+                requests = _context.Request.Where(t => t.CreatedBy == userIdInt);
+            }
+            else if (user.Role == 0)
+            {
+                // If the user has role 0, filter requests by the escalated status
+                requests = _context.Request.Where(t => t.Status == Status.Escalated);
+            }
             else
             {
-                // If the user is not a manager, filter requests by the user who created them
-                requests = _context.Request.Where(t => t.CreatedBy == userIdInt);
+                // If the user has an unknown role, return an empty list of requests
+                requests = Enumerable.Empty<Request>().AsQueryable();
             }
 
             // Convert the filtered requests to a list and pass it to the view
@@ -54,8 +69,11 @@ namespace DemoWE.Controllers
         }
 
         // GET: Requests/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id ,Request r)
         {
+           
+            var li = await _context.User.ToListAsync();
+            ViewBag.At = li;
             if (id == null)
             {
                 return NotFound();
@@ -74,10 +92,11 @@ namespace DemoWE.Controllers
 
             // Retrieve the user's information from the database
             var user = await _context.User.FindAsync(userIdInt);
-
+           
             // Pass the user's role to the view
             ViewData["UserRole"] = user.Role;
-
+            ViewData["Userid"] = user.EmployeeNumber;
+            ViewData["Createdby"] = r.CreatedBy;
             return View(request);
         }
 
@@ -97,6 +116,10 @@ namespace DemoWE.Controllers
             await HttpContext.Session.LoadAsync();
             string userId = HttpContext.Session.GetString("userid");
             int userIdInt = Convert.ToInt32(userId);
+            await HttpContext.Session.LoadAsync();
+            string role = HttpContext.Session.GetString("Role");
+            int roleInt = Convert.ToInt32(role);
+          
 
             // Retrieve the user's information from the database
             var user = await _context.User.FindAsync(userIdInt);
@@ -104,13 +127,21 @@ namespace DemoWE.Controllers
 
             // Set CreatedBy to the user's ID
             request.CreatedBy = userIdInt;
+            request.StartDate = DateTime.Now;
+            if (roleInt == 2)
+            {
+                request.Status = Status.Escalated;
+            }
+
 
             if (ModelState.IsValid)
             {
                 _context.Add(request);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+                
             }
+           
             return View(request);
         }
 

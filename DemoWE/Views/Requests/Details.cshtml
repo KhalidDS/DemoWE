@@ -49,18 +49,25 @@
                                 <dt>Status:</dt>
                                 <dd>@Html.DisplayFor(model => model.Status)</dd>
                                 <dt>Start Date:</dt>
-                                <dd>@Html.DisplayFor(model => model.StartDate)</dd>
+                                <dd>@Model.StartDate.ToShortDateString()</dd>
                             </div>
                             <div class="col-sm-6">
                                 <dt>Created By:</dt>
-                                <dd>@Html.DisplayFor(model => model.CreatedBy)</dd>
+                                     @foreach (User t in ViewBag.At)
+                            {
+                                if (t.EmployeeNumber == Model.CreatedBy)
+                                {
+                                    <dd>@t.FirstName</dd>
+                                }
+                            }
                             </div>
                         </dl>
                     </div>
                 </div>
                 <div class="card-footer">
                     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                    @if ((int)ViewData["UserRole"] == 0 || (int)ViewData["UserRole"] == 2)
+
+                    @if ((ViewData["Role"] != "1") && ((int)ViewData["Userid"] != Model.CreatedBy))
                     {
                         <div class="button-group">
                             <button id="escalateButton" data-request-id="@Model.RequestID" class="btn btn-danger">Escalate</button>
@@ -68,6 +75,7 @@
                             <button id="acceptButton" data-request-id="@Model.RequestID" class="btn btn-success">Accept</button>
                         </div>
                     }
+                    
                     <a asp-action="Edit" asp-route-id="@Model?.RequestID" class="btn btn-primary">Edit</a>
                 </div>
             </div>

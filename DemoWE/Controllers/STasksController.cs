@@ -46,8 +46,7 @@ namespace DemoWE.Controllers
             int userIdInt = Convert.ToInt32(userId);
             int deptIdInt = Convert.ToInt32(deptId);
             int roleInt = Convert.ToInt32(role);
-
-            ViewBag.Role = roleInt;
+           
             ViewBag.userid = userIdInt;
             // Retrieve the tasks that match the AssignedTo ID and the user ID
             var tasks = await _context.STask
