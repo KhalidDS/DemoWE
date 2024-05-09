@@ -13,5 +13,6 @@ namespace DemoWE.Models
         public DateTime StartDate { get; set; }
         public DateTime Deadline { get; set; }
         public int CreatedBy { get; set; }
+        public int? AssignedDepartmentID { get; set; }
     }
 }
