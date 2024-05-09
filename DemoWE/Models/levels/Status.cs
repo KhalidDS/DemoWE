@@ -1,11 +1,10 @@
-﻿
-
-    public enum Status
-    {
+﻿public enum Status
+{
     New,
     InProgress,
-       Declined,
-       Completed,
-    }
-
-
+    Declined,
+    Completed,
+    Rejected,
+    Escalated,
+    Accepted
+}

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DemoWE.Data;
 using DemoWE.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DemoWE.Controllers
 {
@@ -26,15 +27,30 @@ namespace DemoWE.Controllers
         /// <returns>The list of requests.</returns>
         public async Task<IActionResult> Index(int? CreatedBy)
         {
+            // Get the user ID from the session
             await HttpContext.Session.LoadAsync();
             string userId = HttpContext.Session.GetString("userid");
             int userIdInt = Convert.ToInt32(userId);
 
-            var request = await _context.Request
-                .Where(t => t.CreatedBy == userIdInt || userIdInt == 410001)
-                .ToListAsync();
+            // Retrieve the user's information from the database
+            var user = await _context.User.FindAsync(userIdInt);
 
-            return View(request);
+            IQueryable<Request> requests;
+
+            // Check if the user is a manager (Role == 2)
+            if (user.Role == 2)
+            {
+                // If the user is a manager, filter requests by their department ID
+                requests = _context.Request.Where(t => t.AssignedDepartmentID == user.DepartmentID);
+            }
+            else
+            {
+                // If the user is not a manager, filter requests by the user who created them
+                requests = _context.Request.Where(t => t.CreatedBy == userIdInt);
+            }
+
+            // Convert the filtered requests to a list and pass it to the view
+            return View(await requests.ToListAsync());
         }
 
         // GET: Requests/Details/5
@@ -45,12 +61,22 @@ namespace DemoWE.Controllers
                 return NotFound();
             }
 
-            var request = await _context.Request
-                .FirstOrDefaultAsync(m => m.RequestID == id);
+            var request = await _context.Request.FirstOrDefaultAsync(m => m.RequestID == id);
             if (request == null)
             {
                 return NotFound();
             }
+
+            // Get the user ID from the session
+            await HttpContext.Session.LoadAsync();
+            string userId = HttpContext.Session.GetString("userid");
+            int userIdInt = Convert.ToInt32(userId);
+
+            // Retrieve the user's information from the database
+            var user = await _context.User.FindAsync(userIdInt);
+
+            // Pass the user's role to the view
+            ViewData["UserRole"] = user.Role;
 
             return View(request);
         }
@@ -66,15 +92,19 @@ namespace DemoWE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RequestID,RequestTitle,RequestDescription,rfile,Status,StartDate,CreatedBy,Deadline")] Request request)
+        public async Task<IActionResult> Create([Bind("RequestID,RequestTitle,RequestDescription,rfile,Status,StartDate,CreatedBy,Deadline,AssignedDepartmentID")] Request request)
         {
             await HttpContext.Session.LoadAsync();
             string userId = HttpContext.Session.GetString("userid");
-
-            // Convert userId to int
             int userIdInt = Convert.ToInt32(userId);
 
+            // Retrieve the user's information from the database
+            var user = await _context.User.FindAsync(userIdInt);
+            request.AssignedDepartmentID = user.DepartmentID;
+
+            // Set CreatedBy to the user's ID
             request.CreatedBy = userIdInt;
+
             if (ModelState.IsValid)
             {
                 _context.Add(request);
@@ -82,14 +112,6 @@ namespace DemoWE.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(request);
-            //if (string.IsNullOrEmpty(Request.Status))
-            //{
-            //    Request.Status = "DefaultStatus";
-            //}
-            //_context.Add(request);
-            //    await _context.SaveChangesAsync();
-
-            //return PartialView("_CreatePartial", new Request());
         }
 
         // GET: Requests/Edit/5
@@ -180,5 +202,33 @@ namespace DemoWE.Controllers
         {
             return _context.Request.Any(e => e.RequestID == id);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(int id, string status)
+        {
+            var request = await _context.Request.FindAsync(id);
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            // Parse the string status to Status enum
+            if (Enum.TryParse<Status>(status, out Status parsedStatus))
+            {
+                // Update the status
+                request.Status = parsedStatus;
+
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true, message = "Request status updated successfully." });
+            }
+            else
+            {
+                return BadRequest("Invalid status value.");
+            }
+        }
+
+
     }
 }
