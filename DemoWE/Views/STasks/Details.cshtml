@@ -32,7 +32,7 @@
 
 
     <div class="row">
-        <div class="col-md-6 offset-md-7">
+        <div class="col-md-12">
             <div class="card mb-4">
                 <div class="card-header">
                     <h4 class="card-title mb-0">@Html.DisplayFor(model => model.TaskTitle)</h4>
@@ -44,119 +44,55 @@
                             <dt>Status</dt>
                             <dd>@Html.DisplayFor(model => model.Status)</dd>
                             <dt>StartDate</dt>
-                            <dd>@Html.DisplayFor(model => model.StartDate)</dd>
+                            <dd>@Model.StartDate.ToShortDateString()</dd>
+                           
                             <dt>Deadline</dt>
-                            <dd>@Html.DisplayFor(model => model.Deadline)</dd>
+                            <dd>@Model.Deadline.ToShortDateString()</dd>
                         </div>
                         <div class="col-sm-6">
+                           
+                           
                             <dt>CreatedBy</dt>
-                            <dd>@Html.DisplayFor(model => model.CreatedBy)</dd>
+                            @foreach (User t in ViewBag.At)
+                            {
+                                if (t.EmployeeNumber == Model.CreatedBy)
+                                {
+                                    <dd>@t.FirstName</dd>
+                                }
+                            }
                             <dt>AssignedTo</dt>
-                            <dd>@Html.DisplayFor(model => model.AssignedTo)</dd>
+                            @foreach (User t in ViewBag.At)
+                            {
+                                if (t.EmployeeNumber == Model.AssignedTo)
+                                {
+                                    <dd>@t.FirstName</dd>
+                                }
+                            }
                             <dt>Priority</dt>
                             <dd>@Html.DisplayFor(model => model.Priority)</dd>
                            
                         </div>
-                        @*create checkox here*@
-
-                        <div class="col-sm-6" id="checkboxSection">
-                            <dt>Checkboxes</dt>
-                            <dd id="checkboxList">
-                                <!-- Existing checkboxes will be added here -->
-                            </dd>
-                            <button onclick="addCheckbox()">Add Checkbox</button>
-                        </div>
-
+                    
                         
                         
                         <div>
                          <h4 class="card-title mb-0"> Uploaded files</h4>
+                            <dd>@Html.DisplayFor(model => model.sfile)</dd>
                         </div>
                     </dl>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    Chat
-                </div>
-            </div>
-            <div class="card-body">
-                <!-- Add your chat UI here -->
-                <ul class="list-unstyled mb-0">
-                    <li class="media">
-                        <img src="https://api.adorable.io/avatars/50/abott@adorable.png" class="mr-3 rounded-circle" alt="avatar">
-                        <div class="media-body">
-                            <h6 class="mt-0 mb-1">Abott</h6>
-                            Hello, how are you?
-                        </div>
-                    </li>
-                    <li class="media my-3">
-                        <img src="https://api.adorable.io/avatars/50/jacobs@adorable.png" class="mr-3 rounded-circle" alt="avatar">
-                        <div class="media-body">
-                            <h6 class="mt-0 mb-1">Jacobs</h6>
-                            I'm fine, thank you!
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-footer">
-                <form class="form-inline">
-                    <div class="input-group">
-                        <input type="text" class="form-control form-control-sm" placeholder="Type your message here...">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary btn-sm" type="submit">Send</button>
-                        </div>
-                    </div>
-                </form>
+      
             </div>
         </div>
-    </div>
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
-
 
    
 
     
-            <div class="card mt-4">
-                <div class="card-header">
-                    Checkboxes
-                    </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <a asp-action="Edit" asp-route-id="@Model?.TaskID" class="btn btn-primary float-right">Edit</a>
-                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                    </div>
-        
+      
 
 
-<script>
-    // Counter to keep track of checkbox IDs
-    let checkboxCounter = 1;
-
-    // Function to add a new checkbox
-    function addCheckbox() {
-        const checkboxName = prompt("Enter checkbox name:");
-        if (checkboxName) {
-            const checkboxId = `checkbox_${checkboxCounter++}`;
-            const checkboxHtml = `
-                    <div>
-                        <input type="checkbox" id="${checkboxId}" name="checkboxes" value="${checkboxName}">
-                        <label for="${checkboxId}">${checkboxName}</label>
-                        <button onclick="deleteCheckbox('${checkboxId}')">Delete</button>
-                    </div>
-                `;
-            document.getElementById("checkboxList").innerHTML += checkboxHtml;
-        }
-    }
-
-    // Function to delete a checkbox
-    function deleteCheckbox(checkboxId) {
-        const checkboxElement = document.getElementById(checkboxId);
-        if (checkboxElement) {
-            checkboxElement.parentElement.remove();
-        }
-    }
-</script>

@@ -23,8 +23,12 @@ namespace DemoWE.Controllers
         }
 
         // GET: STasks
+
+
         public async Task<IActionResult> Index(int? AssignedTo, int? CreatedBy)
         {
+            await HttpContext.Session.LoadAsync();
+            HttpContext.Session.Remove("ProjectID");
             var li = await _context.User.ToListAsync();
             ViewBag.At = li;
             // Get the user ID from the session
@@ -55,10 +59,13 @@ namespace DemoWE.Controllers
             ViewBag.dt = di;
             return View(tasks);
         }
-
+      
         // GET: STasks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
+            var li = await _context.User.ToListAsync();
+            ViewBag.At = li;
             if (id == null)
             {
                 return NotFound();
@@ -137,6 +144,9 @@ namespace DemoWE.Controllers
         // GET: STasks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            await HttpContext.Session.LoadAsync();
+            string deptId = HttpContext.Session.GetString("DepartmentID");
+            int deptIdInt = Convert.ToInt32(deptId);
             if (id == null)
             {
                 return NotFound();
@@ -149,6 +159,10 @@ namespace DemoWE.Controllers
             }
             var li = await _context.User.ToListAsync();
             ViewBag.At = li;
+            var di = await _context.User
+             .Where(t => t.DepartmentID == deptIdInt)
+             .ToListAsync();
+            ViewBag.dt = di;
             return View(sTask);
         }
 

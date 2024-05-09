@@ -24,15 +24,19 @@ namespace DemoWE.Controllers
         // GET: Projects
         public async Task<IActionResult> Index(int? AssignedDepartmentID)
         {
+            
+
             var li = await _context.Department.ToListAsync();
             ViewBag.dep = li;
             // Get the user ID from the session
             await HttpContext.Session.LoadAsync();
             string DeptID = HttpContext.Session.GetString("DepartmentID");
-
+             await HttpContext.Session.LoadAsync();
+            string role = HttpContext.Session.GetString("Role");
             // Convert userId to int
             int userIdInt = Convert.ToInt32(DeptID);
-
+            int roleInt = Convert.ToInt32(role);
+            ViewBag.Role = roleInt;
             // Retrieve the tasks that match the AssignedTo ID and the user ID
             var pt = await _context.Project_1
                 .Where(t => t.AssignedDepartmentID == userIdInt )
@@ -46,8 +50,12 @@ namespace DemoWE.Controllers
         {
              await HttpContext.Session.LoadAsync();
             string deptId = HttpContext.Session.GetString("DepartmentID");
+            await HttpContext.Session.LoadAsync();
+            string role = HttpContext.Session.GetString("Role");
 
             int deptIdInt = Convert.ToInt32(deptId);
+            int roleInt = Convert.ToInt32(role);
+            ViewBag.Role = roleInt;
             var li = await _context.User.ToListAsync();
             ViewBag.At = li;
             var di = await _context.User
@@ -61,7 +69,10 @@ namespace DemoWE.Controllers
 
             // Store the ID in session
             HttpContext.Session.SetInt32("ProjectID", id.Value);
-
+             var st = await _staskContext.STask
+                .Where(t => t.project_id == id)
+                .ToListAsync();
+            ViewBag.st = st;
             var project = await _context.Project_1
                 .FirstOrDefaultAsync(m => m.ProjectID == id);
 
@@ -72,6 +83,8 @@ namespace DemoWE.Controllers
 
             return View(project);
         }
+
+
 
         // GET: Projects/Create
         public IActionResult Create()
@@ -84,14 +97,22 @@ namespace DemoWE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectID,ProjectTitle,ProjectDescription,,StartDate,Deadline,Priority,AssignedDepartmentID")] Project project)
+        public async Task<IActionResult> Create([Bind("ProjectID,ProjectTitle,ProjectDescription,StartDate,Deadline,Priority,AssignedDepartmentID")] Project project)
         {
+            await HttpContext.Session.LoadAsync();
+            string deptId = HttpContext.Session.GetString("DepartmentID");
+            ViewBag.asa = deptId;
+            int deptIdInt = Convert.ToInt32(deptId);
+            project.AssignedDepartmentID = deptIdInt;
+            project.Status = 0;
             if (ModelState.IsValid)
             {
                 _context.Add(project);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+           
+          
             return View(project);
         }
 
