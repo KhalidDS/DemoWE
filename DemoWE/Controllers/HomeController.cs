@@ -20,23 +20,40 @@ namespace DemoWE.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Employee(string? DepartmentID)
+        public async Task<IActionResult> Employee(string? DepartmentID, Status? status)
         {
+            // Load session variables
             await HttpContext.Session.LoadAsync();
+
+            // Retrieve user ID from session
             string userId = HttpContext.Session.GetString("userid");
             int userIdInt = Convert.ToInt32(userId);
-            await HttpContext.Session.LoadAsync();
+
+            // Retrieve username from session
             string username = HttpContext.Session.GetString("Username") ?? string.Empty;
             ViewBag.name = username;
-            await HttpContext.Session.LoadAsync();
+
+            // Retrieve department ID from session
             string DeptID = HttpContext.Session.GetString("DepartmentID") ?? string.Empty;
             ViewBag.Department = DeptID;
-            string DepartmentName = string.Empty; // Initialize DepartmentName variable
 
+            // Initialize DepartmentName variable
+            string DepartmentName = string.Empty;
+
+            // Retrieve DepartmentName from the database
             Department departmentName = await _context.Department.FirstOrDefaultAsync(t => t.DepartmentID.ToString() == DeptID);
             DepartmentName = departmentName?.DepartmentName ?? string.Empty;
 
-            ViewBag.DepartmentName = DepartmentName; // Assign DepartmentName to ViewBag
+            // Count the number of tasks with status "New" or "InProgress" assigned to the user
+            int newOrInProgressCount = await _context.STask
+            .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress))
+            .CountAsync();
+
+            // Pass the count to the view
+            ViewBag.NewOrInProgressCount = newOrInProgressCount;
+
+            // Assign DepartmentName to ViewBag
+            ViewBag.DepartmentName = DepartmentName;
 
             return View();
         }
@@ -55,16 +72,20 @@ namespace DemoWE.Controllers
         [HttpPost]
         public List<object> GetData(int? AssignedTo, int? CreatedBy)
         {
-          
             string userId = HttpContext.Session.GetString("userid");
             int userIdInt = Convert.ToInt32(userId);
             List<object> Data = new List<object>();
 
-            List<string> labels = _context.STask.Where(x => x.AssignedTo == userIdInt).Select(x => x.TaskTitle).ToList();
+            // Retrieve task titles
+            List<string> labels = _context.STask.Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress)).Select(x => x.TaskTitle).ToList();
             Data.Add(labels);
-            List<DateTime> StartDate = _context.STask.Where(x => x.AssignedTo == userIdInt).Select(x => x.StartDate).ToList();
+
+            // Retrieve start dates
+            List<DateTime> StartDate = _context.STask.Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress)).Select(x => x.StartDate.Date).ToList();
             Data.Add(StartDate);
-            List<DateTime> Deadline = _context.STask.Where(x => x.AssignedTo == userIdInt).Select(x => x.Deadline).ToList();
+
+            // Retrieve deadlines
+            List<DateTime> Deadline = _context.STask.Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress)).Select(x => x.Deadline.Date).ToList();
             Data.Add(Deadline);
 
             return Data;
@@ -116,5 +137,6 @@ namespace DemoWE.Controllers
 
             return SData;
         }
+
     }
 }

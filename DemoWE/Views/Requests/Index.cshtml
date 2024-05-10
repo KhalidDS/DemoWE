@@ -3,14 +3,39 @@
 @{
     ViewData["Title"] = "Index";
 }
+<head>
 
+
+    <link rel="stylesheet" href="/css/table.css" />
+
+
+</head>
+
+<style>
+    .btn {
+        background-color: #D8D8D8;
+        border: none;
+        color: black;
+        padding: 12px 12px;
+        text-align: center;
+        font-size: 11px;
+        margin: 1px 1px;
+        opacity: 0.6;
+        transition: 0.3s;
+        width: 100px;
+    }
+
+        .btn:hover {
+            opacity: 1
+        }
+</style>
 <h1>Index</h1>
 <p>
     <!-- Link to trigger modal removed -->
-    <button id="createButton" class="btn btn-primary">Create New</button>
-</p>
+@*     <button id="createButton" class="btn btn-primary">Create New</button>
+ *@</p>
 
-<table class="table">
+<table>
     <thead>
         <tr>
             <th>
@@ -19,8 +44,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.RequestDescription)
             </th>
-         @*    <th>
-                @Html.DisplayNameFor(model => model.Rfile)
+            @*    <th>
+            @Html.DisplayNameFor(model => model.Rfile)
             </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
@@ -28,60 +53,70 @@
             <th>
                 @Html.DisplayNameFor(model => model.StartDate)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Deadline)
-            </th>
-          @*   <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
+            @* <th>
+            @Html.DisplayNameFor(model => model.Deadline)
             </th> *@
-            <th></th>
+            @*   <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+            </th> *@
+            <th><button id="createButton" class="btn" style="font-size: 15px;">Create</button></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RequestTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RequestDescription)
-            </td>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.Rfile)
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestDescription)
+                </td>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.Rfile)
             </td> *@
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
                 <td>@item.StartDate.ToShortDateString()</td>
-                <td>@item.Deadline.ToShortDateString()</td>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
+                @*  <td>@item.Deadline.ToShortDateString()</td> *@
+                @* <td>
+            @Html.DisplayFor(modelItem => item.CreatedBy)
             </td> *@
             <td>
-                <a asp-action="Edit" asp-route-id="@item.RequestID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RequestID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RequestID">Delete</a>
+               <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Option</button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+                                <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.RequestID">Edit</a>
+                                <a class="dropdown-item" asp-action="Details" asp-route-id="@item.RequestID">Details</a>
+                                <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.RequestID">Delete</a>
+                </div>
+            </div>
+        </div>
             </td>
         </tr>
 }
+       
     </tbody>
 </table>
 
-               
+
 <div class="row">
     <div class="col-md-4">
         <div id="createModal" class="modal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Create Task</h5>
+                        <h5 class="modal-title">Create request</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <!-- Partial view for Create Task form -->
-                        @await Html.PartialAsync("_CreatePartial", new Request()) 
+                        @await Html.PartialAsync("_CreatePartial", new Request())
                     </div>
                 </div>
             </div>

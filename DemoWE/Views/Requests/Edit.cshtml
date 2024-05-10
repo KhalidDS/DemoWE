@@ -23,30 +23,30 @@
                 <input asp-for="RequestDescription" class="form-control" />
                 <span asp-validation-for="RequestDescription" class="text-danger"></span>
             </div>
-           @*  <div class="form-group">
-                <label asp-for="Rfile" class="control-label"></label>
-                <input asp-for="Rfile" class="form-control" />
-                <span asp-validation-for="Rfile" class="text-danger"></span>
+            <div class="form-group">
+                <label asp-for="rfile" class="control-label"></label>
+                <input type="file" id="rfile" class="form-control" name="sfile" />
+                <span asp-validation-for="rfile" class="text-danger"></span>
+            </div>
+            @*  <div class="form-group">
+            <label asp-for="Status" class="control-label"></label>
+            <select asp-for="Status" asp-items="Html.GetEnumSelectList<Status>()" class="form-control"></select>
+            <span asp-validation-for="Status" class="text-danger"></span>
             </div> *@
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" asp-items="Html.GetEnumSelectList<Status>()" class="form-control"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
+            @*  <div class="form-group">
+            <label asp-for="StartDate" class="control-label"></label>
+            <input type="date" asp-for="StartDate" class="form-control" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input type="date" asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Deadline" class="control-label"></label>
-                <input type="date" asp-for="Deadline" class="form-control" />
-                <span asp-validation-for="Deadline" class="text-danger"></span>
-            </div>
-           @*  <div class="form-group">
-                <label asp-for="CreatedBy" class="control-label"></label>
-                <input asp-for="CreatedBy" class="form-control" />
-                <span asp-validation-for="CreatedBy" class="text-danger"></span>
+            <label asp-for="Deadline" class="control-label"></label>
+            <input type="date" asp-for="Deadline" class="form-control" />
+            <span asp-validation-for="Deadline" class="text-danger"></span>
+            </div> *@
+            @*  <div class="form-group">
+            <label asp-for="CreatedBy" class="control-label"></label>
+            <input asp-for="CreatedBy" class="form-control" />
+            <span asp-validation-for="CreatedBy" class="text-danger"></span>
             </div> *@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -60,5 +60,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

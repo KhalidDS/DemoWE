@@ -16,36 +16,13 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Status" class="control-label"></label>
-        <select asp-for="Status" asp-items="Html.GetEnumSelectList<Status>()" class="form-control"></select>
-        <span asp-validation-for="Status" class="text-danger"></span>
+        <label asp-for="rfile" class="control-label"></label>
+        <input type="file" id="rfile" class="form-control" name="sfile" />
+        <span asp-validation-for="rfile" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="StartDate" class="control-label"></label>
-        <div class="input-group">
-            <input asp-for="StartDate" class="form-control" type="date" value="" />
-            <div class="input-group-append">
-                <label class="input-group-text">
-                    <input type="checkbox" id="startImmediately" onclick=handleStartDate()>
-                    Start Immediately
-                </label>
-            </div>
-        </div>
-        <span asp-validation-for="StartDate" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Deadline" class="control-label"></label>
-        <input asp-for="Deadline" class="form-control" type="date" value=""/>
-        <span asp-validation-for="Deadline" class="text-danger"></span>
-    </div>
-
-@*     <div class="form-group">
-        <label asp-for="CreatedBy" class="control-label"></label>
-        <input asp-for="CreatedBy" class="form-control" />
-        <span asp-validation-for="CreatedBy" class="text-danger"></span>
-    </div> *@
+    <!-- Hidden field for AssignedDepartmentID -->
+    <input type="hidden" id="AssignedDepartmentID" name="AssignedDepartmentID" value="@ViewData["DepartmentID"]" />
 
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-primary" />
@@ -61,6 +38,7 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
 <script>
     function handleStartDate() {
         var checkbox = document.getElementById("startImmediately");
@@ -77,4 +55,8 @@
             dateInput.value = "";
         }
     }
+</script>
+<script>
+    // Set AssignedDepartmentID to DepartmentID of the logged-in user
+    document.getElementById("AssignedDepartmentID").value = "@ViewData["DepartmentID"]";
 </script>
