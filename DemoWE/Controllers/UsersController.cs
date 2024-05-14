@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DemoWE.Data;
 using DemoWE.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace DemoWE.Controllers
 {
@@ -45,10 +46,18 @@ namespace DemoWE.Controllers
                 int role = (int)reader["Role"];
                 string id = Convert.ToString((int)reader["EmployeeNumber"]);
                 string D_id = Convert.ToString((int)reader["DepartmentID"]);
+
+                // Added this for navbar email view bag
+                string email = reader["Email"].ToString();
+
                 HttpContext.Session.SetString("Username", na);
                 HttpContext.Session.SetString("Role", role.ToString());
                 HttpContext.Session.SetString("userid", id);
                 HttpContext.Session.SetString("DepartmentID", D_id);
+
+                // Added this for navbar email view bag
+                HttpContext.Session.SetString("Email", email);
+
                 reader.Close();
                 conn1.Close();
                 if (role == 1)

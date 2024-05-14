@@ -34,6 +34,11 @@ namespace DemoWE.Controllers
             string username = HttpContext.Session.GetString("Username") ?? string.Empty;
             ViewBag.name = username;
 
+            // Retrieve email from session
+            string email = HttpContext.Session.GetString("Email") ?? string.Empty;
+            ViewBag.email = email;
+
+
             // Retrieve department ID from session
             string DeptID = HttpContext.Session.GetString("DepartmentID") ?? string.Empty;
             ViewBag.Department = DeptID;
