@@ -237,7 +237,31 @@ namespace DemoWE.Controllers
         {
             return _context.STask.Any(e => e.TaskID == id);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(int id, string status)
+        {
+            var task = await _context.STask.FindAsync(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            // Assuming Status is an enum, if not, adjust this part accordingly
+            if (Enum.TryParse<Status>(status, out Status parsedStatus))
+            {
+                task.Status = parsedStatus;
+                await _context.SaveChangesAsync();
+                return Json(new { success = true, message = "Task status updated successfully." });
+            }
+            else
+            {
+                return BadRequest("Invalid status value.");
+            }
+        }
+
+
+
+
     }
-
-
 }

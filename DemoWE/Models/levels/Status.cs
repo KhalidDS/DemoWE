@@ -6,5 +6,6 @@
     Completed,
     Rejected,
     Escalated,
-    Accepted
+    Accepted,
+    Confirm
 }
