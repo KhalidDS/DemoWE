@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using DemoWE.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis;
 
 
 
@@ -46,7 +47,7 @@ namespace DemoWE.Controllers
 
             // Count the number of tasks with status "New" or "InProgress" assigned to the user
             int newOrInProgressCount = await _context.STask
-            .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress))
+            .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null)
             .CountAsync();
 
             // Pass the count to the view
@@ -77,15 +78,24 @@ namespace DemoWE.Controllers
             List<object> Data = new List<object>();
 
             // Retrieve task titles
-            List<string> labels = _context.STask.Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress)).Select(x => x.TaskTitle).ToList();
+            List<string> labels = _context.STask
+                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null) // Add condition for project_id == null
+                .Select(x => x.TaskTitle)
+                .ToList();
             Data.Add(labels);
 
             // Retrieve start dates
-            List<DateTime> StartDate = _context.STask.Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress)).Select(x => x.StartDate.Date).ToList();
+            List<DateTime> StartDate = _context.STask
+                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null) // Add condition for project_id == null
+                .Select(x => x.StartDate.Date)
+                .ToList();
             Data.Add(StartDate);
 
             // Retrieve deadlines
-            List<DateTime> Deadline = _context.STask.Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress)).Select(x => x.Deadline.Date).ToList();
+            List<DateTime> Deadline = _context.STask
+                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null) // Add condition for project_id == null
+                .Select(x => x.Deadline.Date)
+                .ToList();
             Data.Add(Deadline);
 
             return Data;
@@ -98,12 +108,12 @@ namespace DemoWE.Controllers
 
             List<object> SData = new List<object>();
 
-            List<string> TaskTitle = _context.STask.Where(x => x.AssignedTo == userIdInt)
+            List<string> TaskTitle = _context.STask.Where(x => x.AssignedTo == userIdInt && x.project_id == null) // Add condition for project_id == null
                                                    .OrderByDescending(x => x.TaskID)
                                                    .Take(3)
                                                    .Select(x => x.TaskTitle)
                                                    .ToList();
-            List<Status> status = _context.STask.Where(x => x.AssignedTo == userIdInt)
+            List<Status> status = _context.STask.Where(x => x.AssignedTo == userIdInt && x.project_id == null) // Add condition for project_id == null
                                                 .OrderByDescending(x => x.TaskID)
                                                 .Take(3)
                                                 .Select(x => x.Status)
