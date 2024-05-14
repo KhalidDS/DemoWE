@@ -1,12 +1,16 @@
 ﻿@model DemoWE.Models.STask
+
 @{
     ViewData["Title"] = "Details";
 }
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
-<style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
+<style>
     .card-body {
         margin-bottom: 20px;
     }
@@ -21,16 +25,9 @@
             flex-basis: 50%;
             padding: 10px;
         }
-
-    }
 </style>
 
-
-
 <div class="container-fluid">
-   
-
-
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
@@ -45,15 +42,12 @@
                             <dd>@Html.DisplayFor(model => model.Status)</dd>
                             <dt>StartDate</dt>
                             <dd>@Model.StartDate.ToShortDateString()</dd>
-                           
                             <dt>Deadline</dt>
                             <dd>@Model.Deadline.ToShortDateString()</dd>
                         </div>
                         <div class="col-sm-6">
-                           
-                           
                             <dt>CreatedBy</dt>
-                            @foreach (User t in ViewBag.At)
+                            @foreach (var t in ViewBag.At)
                             {
                                 if (t.EmployeeNumber == Model.CreatedBy)
                                 {
@@ -61,7 +55,7 @@
                                 }
                             }
                             <dt>AssignedTo</dt>
-                            @foreach (User t in ViewBag.At)
+                            @foreach (var t in ViewBag.At)
                             {
                                 if (t.EmployeeNumber == Model.AssignedTo)
                                 {
@@ -70,29 +64,72 @@
                             }
                             <dt>Priority</dt>
                             <dd>@Html.DisplayFor(model => model.Priority)</dd>
-                           
                         </div>
-                    
-                        
-                        
                         <div>
-                         <h4 class="card-title mb-0"> Uploaded files</h4>
+                            <h4 class="card-title mb-0"> Uploaded files</h4>
                             <dd>@Html.DisplayFor(model => model.sfile)</dd>
                         </div>
                     </dl>
                 </div>
+                <div class="card-footer">
+                    <div class="button-group">
+                        <button id="confirmButton" data-task-id="@Model.TaskID" class="btn btn-success">Confirm</button>
+                        <button id="completeButton" data-task-id="@Model.TaskID" class="btn btn-primary">Complete</button>
+                        <button id="declineButton" data-task-id="@Model.TaskID" class="btn btn-danger">Decline</button>
+                    </div>
+                </div>
             </div>
         </div>
-      
-            </div>
-        </div>
+    </div>
+</div>
+
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
-   
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Handle Confirm button click
+            $('#confirmButton').on('click', function () {
+                var taskId = $(this).data('task-id');
+                updateTaskStatus(taskId, 'Confirmed');
+            });
 
-    
-      
+            // Handle Complete button click
+            $('#completeButton').on('click', function () {
+                var taskId = $(this).data('task-id');
+                updateTaskStatus(taskId, 'Completed');
+            });
 
+            // Handle Decline button click
+            $('#declineButton').on('click', function () {
+                var taskId = $(this).data('task-id');
+                updateTaskStatus(taskId, 'Declined');
+            });
 
+            // Function to update task status via AJAX
+            function updateTaskStatus(taskId, status) {
+                $.ajax({
+                    url: '/STasks/UpdateStatus/' + taskId,
+                    type: 'POST',
+                    data: { id: taskId, status: status },
+                    success: function (response) {
+                        if (response.success) {
+                            // Update UI or show success message
+                            toastr.success(response.message);
+                            // Optionally update the status displayed on the page
+                        } else {
+                            // Show error message
+                            toastr.error("Error: " + response.message);
+                        }
+                    },
+                    error: function () {
+                        // Show error message
+                        toastr.error("An error occurred while processing the request.");
+                    }
+                });
+            }
+        });
+    </script>
+}
