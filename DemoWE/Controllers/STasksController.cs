@@ -50,7 +50,7 @@ namespace DemoWE.Controllers
             ViewBag.userid = userIdInt;
             // Retrieve the tasks that match the AssignedTo ID and the user ID
             var tasks = await _context.STask
-            .Where(t => (t.AssignedTo == userIdInt || t.CreatedBy == userIdInt) && t.project_id == null)
+            .Where(t => (t.AssignedTo == userIdInt || t.CreatedBy == userIdInt))
             .ToListAsync();
             var di = await _context.User
               .Where(t => t.DepartmentID == deptIdInt)
