@@ -37,7 +37,7 @@ table {
 }
 
 .sidebar-open table {
-    left: calc(200px + 50%); /* Width of sidebar + some margin */
+    left: calc(200px + 45%); /* Width of sidebar + some margin */
 }
 
 td,
