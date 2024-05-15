@@ -63,9 +63,16 @@
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Enter password">
-                       
-                        <input asp-for="Password" class="input100" placeholder="Password" />
-                        <span asp-validation-for="Password" class="focus-input100" data-placeholder="&#xf191;"></span>
+                        <input id="passwordInput" asp-for="Password" type="password" class="input100" placeholder="Password" />
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                        <span class="toggle-password" onclick="togglePasswordVisibility()">
+                            <i class="fa fa-eye" aria-hidden="true" style="color: white;"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Confirm password">
+                        <input id="confirmPasswordInput" type="password" class="input100" placeholder="Confirm Password" />
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Enter first name">
@@ -80,15 +87,13 @@
                         <span asp-validation-for="LastName" class="focus-input100" data-placeholder="&#xf205;"></span>
                     </div>
 
-                    <div class="wrap-input100 validate-input" data-validate="Enter email" >
-                       
-                        <input asp-for="Email" class="input100" placeholder="Email" />
+                    <div class="wrap-input100 validate-input" data-validate="Enter email">
+                        <input id="emailInput" type="email" asp-for="Email" class="input100" placeholder="Email" />
                         <span asp-validation-for="Email" class="focus-input100" data-placeholder="&#xf15a;"></span>
                     </div>
 
                     <div class="wrap-input100 validate-input" data-validate="Enter phone number">
-                      
-                        <input asp-for="PhoneNumber" class="input100" placeholder="Phone Number" />
+                        <input id="phoneInput" type="tel" asp-for="PhoneNumber" class="input100" placeholder="Phone Number" />
                         <span asp-validation-for="PhoneNumber" class="focus-input100" data-placeholder="&#xf2be;"></span>
                     </div>
 
@@ -132,5 +137,91 @@
     <!--===============================================================================================-->
     <script src="~/js/main.js"></script>
 
+    <script>
+        // Get the email input element
+        var emailInput = document.getElementById('emailInput');
+
+        // Add an event listener for the invalid event to handle custom validation message
+        emailInput.addEventListener('invalid', function (event) {
+            // Prevent the default browser validation message
+            event.preventDefault();
+            // Show a custom validation message
+            alert('Please enter a valid email address.');
+        });
+    </script>
+    <script>
+        // Get the phone number input element
+        var phoneInput = document.getElementById('phoneInput');
+
+        // Add an event listener for the input event to validate phone number format
+        phoneInput.addEventListener('input', function () {
+            // Get the input value
+            var phoneNumber = phoneInput.value;
+
+            // Remove any non-numeric characters from the input value
+            var numericPhoneNumber = phoneNumber.replace(/\D/g, '');
+
+            // Update the input value to contain only numeric characters
+            phoneInput.value = numericPhoneNumber;
+        });
+    </script>
+    <script>
+        // Get the form element
+        var form = document.querySelector('form');
+
+        // Add an event listener for the form submit event
+        form.addEventListener('submit', function (event) {
+            // Get the values of both password fields
+            var password = form.querySelector('#passwordInput').value;
+            var confirmPassword = form.querySelector('#confirmPasswordInput').value;
+
+            // Check if the passwords match
+            if (password !== confirmPassword) {
+                // If passwords do not match, prevent form submission
+                event.preventDefault();
+                // Show an alert message
+                alert('Passwords do not match.');
+                // Clear the confirm password field
+                form.querySelector('#confirmPasswordInput').value = '';
+            }
+        });
+    </script>
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('passwordInput');
+            var toggleCheckbox = document.querySelector('.toggle-password input');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+
+            // Update the checkbox icon based on the input type
+            toggleCheckbox.checked = passwordInput.type === 'text';
+        }
+    </script>
+
+    <style>
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+            .toggle-password i {
+                font-size: 20px;
+                color: #666;
+            }
+
+        .input100 {
+            padding-right: 30px; /* Adjust this value to make space for the toggle button */
+        }
+
+    </style>
+
 </body>
 </html>
+
