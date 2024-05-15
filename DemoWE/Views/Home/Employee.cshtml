@@ -1,4 +1,6 @@
 ﻿@{
+    Layout = "_Layout";
+
     ViewData["Title"] = "Home Page";
 }
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -34,7 +36,7 @@
 <!-- Your homepage content -->
 <div class="home-content">
     <!-- Time icon -->
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 80px;">
+    <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size: 80px;">
         <img src="https://www3.0zz0.com/2024/05/14/21/558961871.png" alt="Logo" style="max-height: 80px;">
     </div>
 
@@ -205,6 +207,7 @@
                 taskMapping[taskName] = i; // Map task name to numerical value
                 var taskData = [{ x: _StartData[i], y: taskName }, { x: _DeadData[i], y: taskName }]; // Use task name for y-value
                 datasets.push({
+                  
                     label: taskName,
                     data: taskData,
                     borderColor: lineColors[i % lineColors.length],

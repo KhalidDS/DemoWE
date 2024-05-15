@@ -1,11 +1,19 @@
 ﻿@model IEnumerable<DemoWE.Models.User>
 
 @{
+    Layout = "_LayAdmin";
+
     ViewData["Title"] = "Index";
 }
+<head>
 
+
+    <link rel="stylesheet" href="/css/table.css" />
+
+
+</head>
 <h1>Index</h1>
-
+    
 <p>
     <a asp-action="Create">Create New</a>
 </p>

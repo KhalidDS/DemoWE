@@ -55,6 +55,7 @@ namespace DemoWE.Controllers
                 HttpContext.Session.SetString("userid", id);
                 HttpContext.Session.SetString("DepartmentID", D_id);
 
+
                 // Added this for navbar email view bag
                 HttpContext.Session.SetString("Email", email);
 

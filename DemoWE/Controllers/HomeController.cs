@@ -84,21 +84,21 @@ namespace DemoWE.Controllers
 
             // Retrieve task titles
             List<string> labels = _context.STask
-                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null) // Add condition for project_id == null
+                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null) 
                 .Select(x => x.TaskTitle)
                 .ToList();
             Data.Add(labels);
 
             // Retrieve start dates
             List<DateTime> StartDate = _context.STask
-                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null) // Add condition for project_id == null
+                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null) 
                 .Select(x => x.StartDate.Date)
                 .ToList();
             Data.Add(StartDate);
 
             // Retrieve deadlines
             List<DateTime> Deadline = _context.STask
-                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null) // Add condition for project_id == null
+                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null) 
                 .Select(x => x.Deadline.Date)
                 .ToList();
             Data.Add(Deadline);
@@ -113,12 +113,12 @@ namespace DemoWE.Controllers
 
             List<object> SData = new List<object>();
 
-            List<string> TaskTitle = _context.STask.Where(x => x.AssignedTo == userIdInt && x.project_id == null) // Add condition for project_id == null
+            List<string> TaskTitle = _context.STask.Where(x => x.AssignedTo == userIdInt && x.project_id == null) 
                                                    .OrderByDescending(x => x.TaskID)
                                                    .Take(3)
                                                    .Select(x => x.TaskTitle)
                                                    .ToList();
-            List<Status> status = _context.STask.Where(x => x.AssignedTo == userIdInt && x.project_id == null) // Add condition for project_id == null
+            List<Status> status = _context.STask.Where(x => x.AssignedTo == userIdInt && x.project_id == null) 
                                                 .OrderByDescending(x => x.TaskID)
                                                 .Take(3)
                                                 .Select(x => x.Status)
