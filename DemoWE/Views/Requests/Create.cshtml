@@ -1,6 +1,14 @@
 ﻿@model DemoWE.Models.Request
 
 @{
+    if (Context.Session.GetString("Username") == "admin")
+    {
+        Layout = "_LayAdmin";
+    }
+    else
+    {
+        Layout = "_Layout";
+    }
     ViewData["Title"] = "Create";
 }
 

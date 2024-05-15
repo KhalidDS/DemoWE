@@ -1,6 +1,14 @@
 ﻿@model DemoWE.Models.Request
 
 @{
+    if (Context.Session.GetString("Username") == "admin")
+    {
+        Layout = "_LayAdmin";
+    }
+    else
+    {
+        Layout = "_Layout";
+    }
     ViewData["Title"] = "Details";
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">

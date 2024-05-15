@@ -24,28 +24,44 @@
             </a>
             <div class="logo-text">WorkEvo</div>
             <div class="logo-subtext">Task management system</div>
+            <br />
+            <div class="horizontal-divider"></div>
+
         </div>
         <!-- Navigation links -->
         <ul class="navbar-nav flex-grow-1">
             <li class="nav-item">
-                <a class="nav-link text-dark text-center" asp-area="" asp-controller="Home" asp-action="Employee">
-                   Admin Home
+                <a class="nav-link text-dark text-center" asp-area="" asp-controller="Home" asp-action="Admin">
+                    <span class="hover-box">Admin Home</span>
                 </a>
             </li>
+            <br />
+            <div class="horizontal-divider"></div>
+            <br />
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark text-center" asp-area="" asp-controller="Projects" asp-action="Index">
-                    Projects
+                <a class="nav-link text-dark text-center" asp-area="" asp-controller="Departments" asp-action="Index">
+                    <span class="hover-box">Departments</span>
                 </a>
             </li>
+
+            <br />
+            <div class="horizontal-divider"></div>
+            <br />
+
             <li class="nav-item">
-                <a class="nav-link text-dark text-center" asp-area="" asp-controller="STasks" asp-action="Index">
-                    Tasks
+                <a class="nav-link text-dark text-center" asp-area="" asp-controller="Users" asp-action="Index">
+                    <span class="hover-box">Users</span>
                 </a>
             </li>
+
+            <br />
+            <div class="horizontal-divider"></div>
+            <br />
+
             <li class="nav-item">
                 <a class="nav-link text-dark text-center" asp-area="" asp-controller="Requests" asp-action="Index">
-                    Requests
+                    <span class="hover-box">Requests</span>
                 </a>
             </li>
         </ul>
@@ -79,11 +95,13 @@
         function openSidebar() {
             document.getElementById("mySidebar").style.width = "250px";
             document.getElementById("main").style.marginLeft = "250px";
+            document.getElementById("main").classList.add("sidebar-open"); // Add class to the main content
         }
 
         function closeSidebar() {
             document.getElementById("mySidebar").style.width = "0";
             document.getElementById("main").style.marginLeft = "0";
+            document.getElementById("main").classList.remove("sidebar-open"); // Remove class from the main content
         }
     </script>
 
@@ -99,7 +117,7 @@
             z-index: 1; /* Stay on top */
             top: 0;
             left: 0;
-            background-color: #DDDDDD; /* Gray */
+            background-color: white; /* Gray */
             overflow-x: hidden; /* Disable horizontal scroll */
             transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
             padding-top: 20px; /* Place content 20px from the top */
@@ -164,12 +182,12 @@
         }
 
         .logo-text {
-            font-size: 18px;
+            font-size: 25px;
             font-weight: bold;
         }
 
         .logo-subtext {
-            font-size: 14px;
+            font-size: 18px;
             color: #666;
         }
 
@@ -185,7 +203,7 @@
             align-items: center;
             padding: 10px;
             margin-top: auto;
-            background-color: #f8f9fa;
+            background-color: white;
         }
 
         .user-logo {
@@ -217,6 +235,13 @@
             margin: 0 10px;
         }
 
+        .horizontal-divider {
+            height: 1px;
+            width: 100%;
+            background-color: #ccc; /* Color of the divider */
+            margin: 2px; /* Adjust the margin as needed */
+        }
+
         .logout-btn {
             color: #818181;
             font-size: 20px;
@@ -229,6 +254,31 @@
                 background-color: red;
                 color: #f1f1f1;
             }
+
+        .hover-box {
+            position: relative;
+            color: #000; /* Default text color */
+            transition: color 0.3s; /* Smooth transition for text color change */
+        }
+
+            .hover-box:hover {
+                color: #ccc; /* Text color on hover */
+            }
+
+                .hover-box:hover::before {
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 200px; /* Adjust the width of the box */
+                    height: 45px; /* Adjust the height of the box */
+                    background-color: #9152f8; /* Color of the box */
+                    border-radius: 15px; /* Make it round */
+                    z-index: -1; /* Ensure it's behind the text */
+                    transition: background-color 0.3s, border-radius 0.3s; /* Smooth transition for background color and border radius */
+                }
+
     </style>
 
     @await RenderSectionAsync("Scripts", required: false)

@@ -1,6 +1,18 @@
 ﻿@model IEnumerable<DemoWE.Models.Request>
 
+@using Microsoft.AspNetCore.Http
+
 @{
+    if (Context.Session.GetString("Username") == "admin")
+    {
+        Layout = "_LayAdmin";
+    }
+    else
+    {
+        Layout = "_Layout";
+    }
+
+
     ViewData["Title"] = "Index";
 }
 <head>
