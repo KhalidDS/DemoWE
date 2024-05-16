@@ -28,11 +28,16 @@
 </style>
 
 <div class="container-fluid">
+    <h1>
+        @ViewData["UserRole"]
+        @ViewData["Userid"]
+    </h1>
     <div class="row">
         <div class="col-md-12">
             <div class="card mb-4">
                 <div class="card-header">
                     <h4 class="card-title mb-0">@Html.DisplayFor(model => model.TaskTitle)</h4>
+                   
                 </div>
                 <div class="card-body">
                     <p>@Html.DisplayFor(model => model.TaskDescription)</p>
@@ -72,11 +77,26 @@
                     </dl>
                 </div>
                 <div class="card-footer">
-                    <div class="button-group">
-                        <button id="confirmButton" data-task-id="@Model.TaskID" class="btn btn-success">Confirm</button>
-                        <button id="completeButton" data-task-id="@Model.TaskID" class="btn btn-primary">Complete</button>
-                        <button id="declineButton" data-task-id="@Model.TaskID" class="btn btn-danger">Decline</button>
-                    </div>
+
+                    @if ((ViewBag.user == Model.CreatedBy) || (ViewBag.user != Model.AssignedTo))
+                    {
+                        <div class="button-group">
+                            <button id="completeButton" data-task-id="@Model.TaskID" class="btn btn-primary">Complete</button>
+                            <button id="declineButton" data-task-id="@Model.TaskID" class="btn btn-danger">Decline</button>
+                        </div>
+                    }
+                    else if ((Model.Status == Status.Completed))
+                    {
+                        
+                    }
+                    else
+                    {
+                        <div class="button-group">
+                            <button id="confirmButton" data-task-id="@Model.TaskID" class="btn btn-success">Confirm</button>
+                        </div>
+                    }
+                    
+                  
                 </div>
             </div>
         </div>
@@ -93,7 +113,7 @@
             // Handle Confirm button click
             $('#confirmButton').on('click', function () {
                 var taskId = $(this).data('task-id');
-                updateTaskStatus(taskId, 'Confirmed');
+                updateTaskStatus(taskId, 'Confirm');
             });
 
             // Handle Complete button click

@@ -64,7 +64,7 @@ namespace DemoWE.Controllers
                 if (role == 1)
                     return RedirectToAction("Employee","Home");
                 else if (role == 2)
-                    return RedirectToAction("Index", "STasks");
+                    return RedirectToAction("Employee", "Home");
                 else
                     return RedirectToAction("Admin", "Home");
             }
