@@ -5,17 +5,39 @@
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-<p>
-    @* <asp:Label runat="server" ID="ShowDate"></asp:Label> *@
-</p>
-@* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-... (the integrity hash) ...">
-<i class="far fa-clock"></i>
- *@
-<div style="position: absolute; top:5%; left: 50%; transform: translateX(-50%); border-radius: 10px; width:80%; height: 20%; padding: 10px; color: white; font-size: 30px; overflow: hidden; background: #9152f8; background: -webkit-linear-gradient(top, #7579ff, #b224ef); background: -o-linear-gradient(top, #7579ff, #b224ef); background: -moz-linear-gradient(top, #7579ff, #b224ef); background: linear-gradient(top, #7579ff, #b224ef); box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.3);">
+<style>
+    /* Add your CSS styles here */
+    .home-content {
+        position: absolute;
+        top: 5%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        width: 80%;
+        height: 20%;
+        padding: 10px;
+        color: white;
+        font-size: 30px;
+        overflow: hidden;
+        background: #9152f8;
+        background: -webkit-linear-gradient(top, #7579ff, #b224ef);
+        background: -o-linear-gradient(top, #7579ff, #b224ef);
+        background: -moz-linear-gradient(top, #7579ff, #b224ef);
+        background: linear-gradient(top, #7579ff, #b224ef);
+        box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.3);
+        transition: left 0.5s; /* Smooth transition when moving the content */
+    }
+
+    .sidebar-open .home-content {
+        left: calc(200px + 45%);
+    }
+</style>
+
+<!-- Your homepage content -->
+<div class="home-content">
     <!-- Time icon -->
     <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size: 80px;">
         <img src="https://www3.0zz0.com/2024/05/14/21/558961871.png" alt="Logo" style="max-height: 80px;">
-
     </div>
 
     <div style="padding: 30px; left: 30px; font-size: 40px; position: absolute; top: 50%; transform: translateY(-50%); padding: 30px;">
@@ -28,28 +50,30 @@
     </div>
 </div>
 
+<!-- Rest of your homepage content -->
 <div style="position: absolute; top:35%; left: 20%; transform: translateX(-50%); border-radius: 10px; width:20%; height: 20%; padding: 10px; color: white; font-size: 30px; background: #9152f8; background: -webkit-linear-gradient(top, #7579ff, #b224ef); background: -o-linear-gradient(top, #7579ff, #b224ef); background: -moz-linear-gradient(top, #7579ff, #b224ef); background: linear-gradient(top, #7579ff, #b224ef); box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.3);">
     <div style="display: flex; justify-content: center; align-items: center; height: 100%;font-size: 40px;">
         @ViewBag.DepartmentName Department
     </div>
 </div>
 
-<div style="position: absolute; top:60%; left: 20%; transform: translateX(-50%); border-radius: 10px; width:20%; height:  20%; padding: 10px; color: white; font-size: 30px; background: #9152f8; background: -webkit-linear-gradient(top, #7579ff, #b224ef); background: -o-linear-gradient(top, #7579ff, #b224ef); background: -moz-linear-gradient(top, #7579ff, #b224ef); background: linear-gradient(top, #7579ff, #b224ef); box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.3);">
-    <div style="display: flex; justify-content: center; align-items: center; height: 100%;font-size: 40px;">
-        @if (ViewBag.NewOrInProgressCount == 1)
+<div style="position: absolute; top: 60%; left: 20%; transform: translateX(-50%); border-radius: 10px; width: 20%; height: 20%; padding: 10px; color: white; font-size: 30px; background: #9152f8; background: -webkit-linear-gradient(top, #7579ff, #b224ef); background: -o-linear-gradient(top, #7579ff, #b224ef); background: -moz-linear-gradient(top, #7579ff, #b224ef); background: linear-gradient(top, #7579ff, #b224ef); box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.3);">
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%; font-size: 40px;">
+        @if (ViewBag.EscalatedRequestCount == 1)
         {
-            <span>@ViewBag.NewOrInProgressCount Active Task</span>
+            <span>@ViewBag.EscalatedRequestCount Request</span>
         }
-        else if (ViewBag.NewOrInProgressCount == 0)
+        else if (ViewBag.EscalatedRequestCount == 0)
         {
-            <span>No Active Tasks</span>
+            <span>No Requests</span>
         }
         else
         {
-            <span>@ViewBag.NewOrInProgressCount Active Tasks</span>
+            <span>@ViewBag.EscalatedRequestCount Requests</span>
         }
     </div>
 </div>
+
 <form id="taskForm">
     <div id="taskDataContainer" style="position: absolute; top:35%; left:82%; transform: translateX(-50%); border-radius: 10px; width:15%; max-width: 300px; height: 45%; max-height: 500px; overflow-y: auto; padding: 10px; color: black; font-size: 20px; background: #9152f8; background: -webkit-linear-gradient(top, #7579ff, #b224ef); background: -o-linear-gradient(top, #7579ff, #b224ef); background: -moz-linear-gradient(top, #7579ff, #b224ef); background: linear-gradient(top, #7579ff, #b224ef); justify-content: center; align-items: center;box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.3);">
 
@@ -57,7 +81,7 @@
             <script>
                 $(document).ready(function () {
                     $.ajax({
-                        url: '@Url.Action("TData", "Home")',
+                        url: '@Url.Action("RData", "Home")',
                         method: 'GET',
                         dataType: 'json',
                         success: function (data) {
@@ -156,7 +180,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/Home/GetData",
+            url: "/Home/GetRData",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
@@ -169,21 +193,18 @@
         function OnSuccessResult(data) {
             var _data = data;
             var _chartLabels = _data[0];
-            var _StartData = _data[1].map(date => new Date(date));
-            var _DeadData = _data[2].map(date => new Date(date));
+            var _startData = _data[1].map(date => new Date(date)); // Rename to startData to follow camelCase convention
 
-            // Define line colors
             var lineColors = ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "grey", "black"];
 
             var datasets = [];
-            var taskMapping = {}; // Object to map task names to numerical values
+            var taskMapping = {};
 
-            for (var i = 0; i < _StartData.length; i++) {
-                var taskName = _chartLabels[i]; // Get task name
-                taskMapping[taskName] = i; // Map task name to numerical value
-                var taskData = [{ x: _StartData[i], y: taskName }, { x: _DeadData[i], y: taskName }]; // Use task name for y-value
+            for (var i = 0; i < _chartLabels.length; i++) { // Change to _chartLabels.length for consistency
+                var taskName = _chartLabels[i];
+                taskMapping[taskName] = i;
+                var taskData = [{ x: _startData[i], y: taskName }]; // Fix the object structure here
                 datasets.push({
-
                     label: taskName,
                     data: taskData,
                     borderColor: lineColors[i % lineColors.length],
@@ -194,13 +215,13 @@
 
             var annotations = [];
 
-            for (var i = 0; i < _StartData.length; i++) {
+            for (var i = 0; i < _chartLabels.length; i++) { // Change to _chartLabels.length for consistency
                 var taskName = _chartLabels[i];
                 annotations.push({
                     type: 'line',
                     mode: 'horizontal',
                     scaleID: 'y',
-                    value: taskMapping[taskName], // Use numerical value from mapping
+                    value: taskMapping[taskName],
                     borderColor: lineColors[i % lineColors.length],
                     borderWidth: 2
                 });
@@ -217,7 +238,7 @@
                 maintainAspectRatio: false,
                 scales: {
                     y: {
-                        type: 'category', // Use category scale for task names
+                        type: 'category',
                         ticks: {
                             color: 'white'
                         }
@@ -230,8 +251,8 @@
                         ticks: {
                             color: 'white'
                         },
-                        min: _StartData[0],
-                        max: _DeadData[_DeadData.length - 1],
+                        min: _startData[0],
+                        max: _startData[_startData.length - 1], // Fix the reference to _DeadData
                         minRotation: 0,
                         maxRotation: 0
                     }

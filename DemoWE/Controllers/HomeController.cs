@@ -64,8 +64,47 @@ namespace DemoWE.Controllers
             return View();
         }
 
-        public IActionResult Admin()
+        public async Task<IActionResult> Admin(string? DepartmentID, Status? status)
         {
+            
+            // Load session variables
+            await HttpContext.Session.LoadAsync();
+
+            // Retrieve user ID from session
+            string userId = HttpContext.Session.GetString("userid");
+            int userIdInt = Convert.ToInt32(userId);
+
+            // Retrieve username from session
+            string username = HttpContext.Session.GetString("Username") ?? string.Empty;
+            ViewBag.name = username;
+
+            // Retrieve email from session
+            string email = HttpContext.Session.GetString("Email") ?? string.Empty;
+            ViewBag.email = email;
+
+
+            // Retrieve department ID from session
+            string DeptID = HttpContext.Session.GetString("DepartmentID") ?? string.Empty;
+            ViewBag.Department = DeptID;
+
+            // Initialize DepartmentName variable
+            string DepartmentName = string.Empty;
+
+            // Retrieve DepartmentName from the database
+            Department departmentName = await _context.Department.FirstOrDefaultAsync(t => t.DepartmentID.ToString() == DeptID);
+            DepartmentName = departmentName?.DepartmentName ?? string.Empty;
+
+            // Count the number of tasks with status "New" or "InProgress" assigned to the user
+            int EscalatedRequestCount = await _context.Request
+           .Where(x => x.Status == Status.Escalated)
+           .CountAsync();
+
+            ViewBag.EscalatedRequestCount = EscalatedRequestCount;
+
+
+            // Assign DepartmentName to ViewBag
+            ViewBag.DepartmentName = DepartmentName;
+
             return View();
         }
 
@@ -106,6 +145,37 @@ namespace DemoWE.Controllers
             return Data;
         }
 
+        [HttpPost]
+        public List<object> GetRData(int? AssignedTo, int? CreatedBy)
+        {
+            try
+            {
+                List<object> RData = new List<object>();
+
+                // Retrieve task titles
+                List<string> labels = _context.Request
+                    .Where(x => x.Status == Status.Escalated)
+                    .Select(x => x.RequestTitle)
+                    .ToList();
+                RData.Add(labels);
+
+                // Retrieve start dates
+                List<DateTime> startDates = _context.Request
+                    .Where(x => x.Status == Status.Escalated)
+                    .Select(x => x.StartDate.Date) // Assuming you want only the date part
+                    .ToList();
+                RData.Add(startDates);
+
+                return RData;
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions appropriately, log them, and return an error response
+                // For example:
+                // return StatusCode(500, "An error occurred while fetching data.");
+                throw;
+            }
+        }
         public List<object> TData(int? AssignedTo, int? CreatedBy)
         {
             string userId = HttpContext.Session.GetString("userid");
@@ -152,6 +222,44 @@ namespace DemoWE.Controllers
 
             return SData;
         }
+        public List<object> RData(Status? status)
+        {
+            try
+            {
+                string userId = HttpContext.Session.GetString("userid");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    // Handle missing user ID
+                    return new List<object>(); // Or throw an exception
+                }
+
+                int userIdInt = Convert.ToInt32(userId);
+
+                List<object> ReData = new List<object>();
+
+                var escalatedRequests = _context.Request
+                    .Where(x => x.Status == Status.Escalated)
+                    .OrderByDescending(x => x.RequestID)
+                    .Take(3)
+                    .ToList();
+
+                List<string> requestTitles = escalatedRequests.Select(x => x.RequestTitle).ToList();
+                List<int> createdBy = escalatedRequests.Select(x => x.CreatedBy).ToList();
+
+                ReData.Add(requestTitles);
+                ReData.Add(createdBy);
+
+                return ReData;
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions appropriately, log them, and return an empty list or error response
+                // For example:
+                // return new List<object>();
+                throw;
+            }
+        }
+
 
     }
 }
