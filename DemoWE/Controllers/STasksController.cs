@@ -31,6 +31,8 @@ namespace DemoWE.Controllers
             HttpContext.Session.Remove("ProjectID");
             var li = await _context.User.ToListAsync();
             ViewBag.At = li;
+            var pi = await _context.Project_1.ToListAsync();
+            ViewBag.p = pi;
             // Get the user ID from the session
             await HttpContext.Session.LoadAsync();
             string userId = HttpContext.Session.GetString("userid");
@@ -46,12 +48,14 @@ namespace DemoWE.Controllers
             int userIdInt = Convert.ToInt32(userId);
             int deptIdInt = Convert.ToInt32(deptId);
             int roleInt = Convert.ToInt32(role);
-           
+            await HttpContext.Session.LoadAsync();
             ViewBag.userid = userIdInt;
             // Retrieve the tasks that match the AssignedTo ID and the user ID
+            await HttpContext.Session.LoadAsync();
             var tasks = await _context.STask
             .Where(t => (t.AssignedTo == userIdInt || t.CreatedBy == userIdInt))
             .ToListAsync();
+            await HttpContext.Session.LoadAsync();
             var di = await _context.User
               .Where(t => t.DepartmentID == deptIdInt)
               .ToListAsync();
@@ -76,6 +80,16 @@ namespace DemoWE.Controllers
             {
                 return NotFound();
             }
+            await HttpContext.Session.LoadAsync();
+            string userId = HttpContext.Session.GetString("userid");
+            int userIdInt = Convert.ToInt32(userId);
+            await HttpContext.Session.LoadAsync();
+            string role = HttpContext.Session.GetString("Role");
+            // Pass the user's role to the view
+            await HttpContext.Session.LoadAsync();
+            ViewBag.role = role;
+            ViewBag.user = userIdInt;
+
 
             return View(sTask);
         }
@@ -121,8 +135,9 @@ namespace DemoWE.Controllers
             }
 
             // Convert userId to int
+            await HttpContext.Session.LoadAsync();
             int userIdInt = Convert.ToInt32(userId);
-
+            await HttpContext.Session.LoadAsync();
             sTask.CreatedBy = userIdInt;
             sTask.Status = 0;
 

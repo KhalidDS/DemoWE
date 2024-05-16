@@ -43,18 +43,23 @@ namespace DemoWE.Controllers
             IQueryable<Request> requests;
 
             // Check if the user is a manager (Role == 2)
+            await HttpContext.Session.LoadAsync();
             if (user.Role == 2)
             {
                 // If the user is a manager, filter requests by their department ID
+                await HttpContext.Session.LoadAsync();
                 requests = _context.Request.Where(t => t.AssignedDepartmentID == user.DepartmentID);
             }
+
             else if (user.Role == 1)
             {
+                await HttpContext.Session.LoadAsync();
                 // If the user is not a manager but has role 1, filter requests by the user who created them
                 requests = _context.Request.Where(t => t.CreatedBy == userIdInt);
             }
             else if (user.Role == 0)
             {
+                await HttpContext.Session.LoadAsync();
                 // If the user has role 0, filter requests by the escalated status
                 requests = _context.Request.Where(t => t.Status == Status.Escalated);
             }
@@ -65,7 +70,7 @@ namespace DemoWE.Controllers
             }
 
             // Convert the filtered requests to a list and pass it to the view
-            return View(await requests.ToListAsync());
+            return View(requests);
         }
 
         // GET: Requests/Details/5
@@ -92,8 +97,9 @@ namespace DemoWE.Controllers
 
             // Retrieve the user's information from the database
             var user = await _context.User.FindAsync(userIdInt);
-           
+
             // Pass the user's role to the view
+            await HttpContext.Session.LoadAsync();
             ViewData["UserRole"] = user.Role;
             ViewData["Userid"] = user.EmployeeNumber;
             ViewData["Createdby"] = r.CreatedBy;
@@ -126,6 +132,7 @@ namespace DemoWE.Controllers
             request.AssignedDepartmentID = user.DepartmentID;
 
             // Set CreatedBy to the user's ID
+            await HttpContext.Session.LoadAsync();
             request.CreatedBy = userIdInt;
             request.StartDate = DateTime.Now;
             if (roleInt == 2)

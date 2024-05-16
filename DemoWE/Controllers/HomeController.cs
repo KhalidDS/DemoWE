@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis;
 
 namespace DemoWE.Controllers
 {
-
+    
     public class HomeController : Controller
     {
         private readonly DemoWEContext _context;
@@ -31,15 +31,18 @@ namespace DemoWE.Controllers
             int userIdInt = Convert.ToInt32(userId);
 
             // Retrieve username from session
+            await HttpContext.Session.LoadAsync();
             string username = HttpContext.Session.GetString("Username") ?? string.Empty;
             ViewBag.name = username;
 
             // Retrieve email from session
+            await HttpContext.Session.LoadAsync();
             string email = HttpContext.Session.GetString("Email") ?? string.Empty;
             ViewBag.email = email;
 
 
             // Retrieve department ID from session
+            await HttpContext.Session.LoadAsync();
             string DeptID = HttpContext.Session.GetString("DepartmentID") ?? string.Empty;
             ViewBag.Department = DeptID;
 
@@ -117,6 +120,7 @@ namespace DemoWE.Controllers
         [HttpPost]
         public List<object> GetData(int? AssignedTo, int? CreatedBy)
         {
+          
             string userId = HttpContext.Session.GetString("userid");
             int userIdInt = Convert.ToInt32(userId);
             List<object> Data = new List<object>();

@@ -30,6 +30,18 @@
             opacity: 1
             
         }
+
+    .past-deadline {
+        color: red;
+    }
+
+    .confirm {
+        color:  limegreen;
+    }
+
+    .complete {
+        color: blue;
+    }
 </style>
 
 <p>
@@ -46,13 +58,14 @@
 <table>
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.TaskTitle)</th>
+            <th>Task Title)</th>
             <th>@Html.DisplayNameFor(model => model.Status)</th>
             <th>@Html.DisplayNameFor(model => model.StartDate)</th>
             <th>@Html.DisplayNameFor(model => model.Deadline)</th>
             <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
             <th>@Html.DisplayNameFor(model => model.AssignedTo)</th>
             <th>@Html.DisplayNameFor(model => model.Priority)</th>
+            <th>Project</th>
             <th> <button id="createButton" class="btn" style="font-size: 15px;">Create</button></th>
         </tr>
     </thead>
@@ -61,9 +74,31 @@
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.TaskTitle)</td>
-                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                @if (item.Status == Status.Confirm)
+                {
+                    <td class="confirm">@item.Status</td>
+                }
+                else if (item.Status == Status.Completed)
+                {
+                    <td class="complete">@item.Status</td>
+                }
+                else if (item.Status == Status.Declined)
+                {
+                    <td class="past-deadline">@item.Status</td>
+                }
+                else
+                {
+                    <td>@item.Status</td>
+                }
                 <td>@item.StartDate.ToShortDateString()</td>
-                <td>@item.Deadline.ToShortDateString()</td>
+                @if (item.Deadline < DateTime.Now && item.Status != Status.Completed)
+                {
+                    <td class="past-deadline">@item.Deadline.ToShortDateString()</td>
+                }
+                else
+                {
+                    <td>@item.Deadline.ToShortDateString()</td>
+                }
                 @foreach (User t in ViewBag.At)
                 {
                     if (t.EmployeeNumber == item.CreatedBy)
@@ -80,6 +115,14 @@
                 }
             
                 <td>@Html.DisplayFor(modelItem => item.Priority)</td>
+
+                @foreach (Project p in ViewBag.p)
+                {
+                    if (p.ProjectID == item.project_id)
+                    {
+                        <td>@p.ProjectTitle</td>
+                    }
+                }
   
                     <td>
                        
