@@ -44,20 +44,20 @@ namespace DemoWE.Controllers
 
             // Check if the user is a manager (Role == 2)
             await HttpContext.Session.LoadAsync();
-            if (user.Role == 2)
+            if (roleInt == 2)
             {
                 // If the user is a manager, filter requests by their department ID
                 await HttpContext.Session.LoadAsync();
                 requests = _context.Request.Where(t => t.AssignedDepartmentID == user.DepartmentID);
             }
 
-            else if (user.Role == 1)
+            else if (roleInt == 1)
             {
                 await HttpContext.Session.LoadAsync();
                 // If the user is not a manager but has role 1, filter requests by the user who created them
                 requests = _context.Request.Where(t => t.CreatedBy == userIdInt);
             }
-            else if (user.Role == 0)
+            else if (roleInt == 0)
             {
                 await HttpContext.Session.LoadAsync();
                 // If the user has role 0, filter requests by the escalated status

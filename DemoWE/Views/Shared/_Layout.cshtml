@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -75,8 +76,8 @@
         <div class="user-box">
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Logo" class="user-logo">
             <div class="user-info">
-                <span class="user-name">@ViewBag.name <i class="bi bi-pencil"></i> </span>
-                <span class="user-email">@ViewBag.email</span>
+                <a class="user-name" asp-controller="Users" asp-action="details" asp-route-id="Enployeenumber">Info<i class="bi bi-pencil"></i> </a>
+                
             </div>
             <div class="vertical-divider"></div>
             <a class="logout-btn" asp-area="" asp-controller="Users" asp-action="Logout">

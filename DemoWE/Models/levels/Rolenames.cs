@@ -1,6 +1,6 @@
 ﻿namespace DemoWE.Models.levels
 {
-    public enum PriorityLevel
+    public enum Rolenames
     {
         Admin = 0,
         Employee = 1,
