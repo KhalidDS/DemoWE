@@ -203,12 +203,12 @@
             for (var i = 0; i < _chartLabels.length; i++) { // Change to _chartLabels.length for consistency
                 var taskName = _chartLabels[i];
                 taskMapping[taskName] = i;
-                var taskData = [{ x: _startData[i], y: taskName }]; // Fix the object structure here
+                var taskData = { x: _startData[i], y: taskName }; // Fix the object structure here
                 datasets.push({
                     label: taskName,
-                    data: taskData,
+                    data: [taskData], // Wrap taskData in an array
                     borderColor: lineColors[i % lineColors.length],
-                    borderWidth: 5,
+                    borderWidth: 7,
                     fill: false
                 });
             }
@@ -251,8 +251,8 @@
                         ticks: {
                             color: 'white'
                         },
-                        min: _startData[0],
-                        max: _startData[_startData.length - 1], // Fix the reference to _DeadData
+                        min: new Date(_startData[0].getTime() - (24 * 60 * 60 * 1000)), // One day before the first task
+                        max: new Date(_startData[_startData.length - 1].getTime() + (24 * 60 * 60 * 1000)), // One day after the last task
                         minRotation: 0,
                         maxRotation: 0
                     }
@@ -263,6 +263,7 @@
                     }
                 }
             };
+        
 
             var myChart = new Chart("myChart", {
                 type: "line",

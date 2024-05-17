@@ -197,6 +197,16 @@
             var _StartData = _data[1].map(date => new Date(date));
             var _DeadData = _data[2].map(date => new Date(date));
 
+            // Calculate the first and last dates
+            var firstStartDate = new Date(Math.min.apply(null, _StartData));
+            var lastDeadDate = new Date(Math.max.apply(null, _DeadData));
+
+            // Adjust the first and last dates to include one day before and after
+            var minDate = new Date(firstStartDate);
+            minDate.setDate(minDate.getDate() - 1);
+            var maxDate = new Date(lastDeadDate);
+            maxDate.setDate(maxDate.getDate() + 1);
+
             // Define line colors
             var lineColors = ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "grey", "black"];
 
@@ -208,7 +218,7 @@
                 taskMapping[taskName] = i; // Map task name to numerical value
                 var taskData = [{ x: _StartData[i], y: taskName }, { x: _DeadData[i], y: taskName }]; // Use task name for y-value
                 datasets.push({
-                  
+
                     label: taskName,
                     data: taskData,
                     borderColor: lineColors[i % lineColors.length],
@@ -255,8 +265,8 @@
                         ticks: {
                             color: 'white'
                         },
-                        min: _StartData[0],
-                        max: _DeadData[_DeadData.length - 1],
+                        min: minDate,
+                        max: maxDate,
                         minRotation: 0,
                         maxRotation: 0
                     }
@@ -266,6 +276,7 @@
                         annotations: annotations
                     }
                 }
+
             };
 
             var myChart = new Chart("myChart", {
@@ -274,6 +285,7 @@
                 options: chartOptions
             });
         }
+
 
         function OnError(err) {
             console.log(err);
