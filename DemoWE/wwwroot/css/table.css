@@ -22,18 +22,32 @@
 }
 
 table {
-    position: absolute;
-    z-index: 2;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 75%;
-    min-left: 50px; /* Minimum left offset */
+    width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
     box-shadow: 0 2px 15px rgba(64, 64, 64, .7);
     border-radius: 30px;
-    transition: left 0.5s; /* Smooth transition when moving the table */
+}
+
+/* Make the first row of headers sticky */
+th {
+    position: sticky;
+    top: 0;
+    z-index: 2; /* Ensure it appears above the table content */
+}
+
+/* Adjust the background and font styles for sticky headers */
+th {
+    background: -webkit-linear-gradient(top, #7579ff, #b224ef);
+    color: #fafafa;
+    font-family: 'Open Sans', Sans-serif;
+    font-weight: 200;
+    text-transform: uppercase;
+}
+
+.table-container {
+    max-height: 830px; /* Adjust as needed */
+    overflow-y: auto; /* Vertical scroll */
 }
 
 .sidebar-open table {
@@ -44,14 +58,6 @@ td,
 th {
     padding: 15px 20px;
     text-align: center;
-}
-
-th {
-    background: -webkit-linear-gradient(top, #7579ff, #b224ef);
-    color: #fafafa;
-    font-family: 'Open Sans', Sans-serif;
-    font-weight: 200;
-    text-transform: uppercase;
 }
 
 tr {
