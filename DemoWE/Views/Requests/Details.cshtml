@@ -73,18 +73,20 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                   
 
                     @if ((ViewData["Role"] != "1") && ((int)ViewData["Userid"] != Model.CreatedBy))
                     {
                         <div class="button-group">
-                            <button id="escalateButton" data-request-id="@Model.RequestID" class="btn btn-danger">Escalate</button>
-                            <button id="rejectButton" data-request-id="@Model.RequestID" class="btn btn-warning">Reject</button>
                             <button id="acceptButton" data-request-id="@Model.RequestID" class="btn btn-success">Accept</button>
+                            
+                            <button id="escalateButton" data-request-id="@Model.RequestID" class="btn btn-warning">Escalate</button>
+                            <button id="rejectButton" data-request-id="@Model.RequestID" class="btn btn-danger">Reject</button>
+                           
                         </div>
                     }
-                    
-                  
+                    <hr />
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
                 </div>
             </div>
         </div>
