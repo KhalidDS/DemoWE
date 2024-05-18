@@ -53,8 +53,10 @@ namespace DemoWE.Controllers
             // Retrieve the tasks that match the AssignedTo ID and the user ID
             await HttpContext.Session.LoadAsync();
             var tasks = await _context.STask
-            .Where(t => (t.AssignedTo == userIdInt || t.CreatedBy == userIdInt))
-            .ToListAsync();
+     .Where(t => (t.AssignedTo == userIdInt || t.CreatedBy == userIdInt))
+     .OrderBy(t => t.Status)
+     .ToListAsync();
+
             await HttpContext.Session.LoadAsync();
             var di = await _context.User
               .Where(t => t.DepartmentID == deptIdInt)

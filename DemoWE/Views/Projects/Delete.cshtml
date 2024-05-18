@@ -11,56 +11,62 @@
     <h4>Project</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProjectTitle)
+        <dt class="col-sm-2">
+            Project Title
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ProjectTitle)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProjectDescription)
+        <dt class="col-sm-2">
+            Project Description
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ProjectDescription)
         </dd>
-       @*  <dt class = "col-sm-2">
+        @*  <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Pfile)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Pfile)
         </dd> *@
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Deadline)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Deadline)
-        </dd>
-        <dt class = "col-sm-2">
+
+        @if (Model != null)
+        {
+            <dt class="col-sm-2">
+                Start Date
+            </dt>
+            <dd class="col-sm-10">
+                @Model.StartDate.ToShortDateString()
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Deadline)
+            </dt>
+            <dd class="col-sm-10">
+                @Model.Deadline.ToShortDateString()
+
+            </dd>
+        }
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Priority)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Priority)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AssignedDepartmentID)
+        <dt class="col-sm-2">
+            Department
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.AssignedDepartmentID)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Status)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Status)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="ProjectID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |

@@ -117,11 +117,13 @@
                                     'margin-top': '5px'
                                 });
                                 if (statuses[i] === "Completed") {
-                                    statusSpan.addClass('completed').css('background-color', '#4CAF50');
+                                    statusSpan.addClass('completed').css('background-color', '#4169e1');
                                 } else if (statuses[i] === "Declined") {
                                     statusSpan.addClass('declined').css('background-color', '#F44336');
+                                } else if (statuses[i] === "Confirm") {
+                                    statusSpan.addClass('Confirm').css('background-color', '#4CAF50');
                                 } else {
-                                    statusSpan.addClass('in-progress').css('background-color', '#FFC107');
+                                    statusSpan.addClass('in-progress').css('background-color', '#f4a460');
                                 }
                                 taskDiv.append(titleSpan).append(statusSpan);
                                 container.append(taskDiv);

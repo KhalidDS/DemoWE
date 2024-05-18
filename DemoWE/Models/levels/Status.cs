@@ -3,9 +3,10 @@
     New,
     InProgress,
     Declined,
-    Completed,
+    Confirm,
     Rejected,
     Escalated,
     Accepted,
-    Confirm
+    Completed
+
 }

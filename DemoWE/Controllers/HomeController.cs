@@ -206,8 +206,8 @@ namespace DemoWE.Controllers
                     case Status.New:
                         statusText.Add("New");
                         break;
-                    case Status.InProgress:
-                        statusText.Add("InProgress");
+                    case Status.Confirm:
+                        statusText.Add("Confirm");
                         break;
                     case Status.Declined:
                         statusText.Add("Declined");

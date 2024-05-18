@@ -58,12 +58,12 @@
 <table>
     <thead>
         <tr>
-            <th>Task Title)</th>
+            <th>Task Title</th>
             <th>@Html.DisplayNameFor(model => model.Status)</th>
-            <th>@Html.DisplayNameFor(model => model.StartDate)</th>
+            <th>Start Date</th>
             <th>@Html.DisplayNameFor(model => model.Deadline)</th>
-            <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
-            <th>@Html.DisplayNameFor(model => model.AssignedTo)</th>
+            <th>From</th>
+            <th>To</th>
             <th>@Html.DisplayNameFor(model => model.Priority)</th>
             <th>Project</th>
             <th> <button id="createButton" class="btn" style="font-size: 15px;">Create</button></th>
@@ -116,21 +116,27 @@
             
                 <td>@Html.DisplayFor(modelItem => item.Priority)</td>
 
-                @foreach (Project p in ViewBag.p)
-                {
-                    if (p.ProjectID == item.project_id)
-                    {
-                        <td>@p.ProjectTitle</td>
-                    }
-                }
-  
+                        @foreach (Project p in ViewBag.p)
+                        {
+                            if (p.ProjectID == item.project_id)
+                            {
+                                <td>@p.ProjectTitle</td>
+                            }
+                        }
+
+                        @if (item.project_id == null)
+                        {
+                            <td>Not Assigned</td>
+                        }
+              
+                  
                     <td>
                        
                     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                         <div class="btn-group" role="group">
                             <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Option</button>
                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                @if (ViewBag.Role != 1 || item.CreatedBy == ViewBag.userid)
+                                @if (item.CreatedBy == ViewBag.userid)
                                 {
                                     <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.TaskID">Edit</a>
 

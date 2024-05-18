@@ -14,21 +14,16 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TaskID" />
             <div class="form-group">
-                <label asp-for="TaskTitle" class="control-label"></label>
+                <label asp-for="TaskTitle" class="control-label">Task Title</label>
                 <input asp-for="TaskTitle" class="form-control" />
                 <span asp-validation-for="TaskTitle" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TaskDescription" class="control-label"></label>
+                <label asp-for="TaskDescription" class="control-label">Task Description</label>
                 <input asp-for="TaskDescription" class="form-control" />
                 <span asp-validation-for="TaskDescription" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-                <label asp-for="Sfile" class="control-label"></label>
-                <input asp-for="Sfile" class="form-control" />
-                <span asp-validation-for="Sfile" class="text-danger"></span>
-            </div> *@
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="Status" class="control-label"></label>
                 
                 <select asp-for="Status" asp-items="Html.GetEnumSelectList<Status>()" class="form-control">
@@ -36,7 +31,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
+                <label asp-for="StartDate" class="control-label">Start Date</label>
                 <input type="date" asp-for="StartDate" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
@@ -51,7 +46,7 @@
                 <span asp-validation-for="CreatedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AssignedTo" class="control-label"></label>
+                <label asp-for="AssignedTo" class="control-label">Assigned To</label>
                 <div id="assignedToContainer">
                     <select asp-for="AssignedTo" class="form-control">
                         <option value="">-- Select Employee --</option>
@@ -61,7 +56,6 @@
                         }
                     </select>
                 </div>
-                <button type="button" id="addAssignedTo" class="btn btn-primary">Add</button>
                 <span asp-validation-for="AssignedTo" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -77,9 +71,10 @@
         </form>
     </div>
 </div>
-<a asp-action="Delete" asp-route-id="@Model.TaskID">Delete</a>
+<hr />
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@Model.TaskID">Delete</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
 
 @section Scripts {

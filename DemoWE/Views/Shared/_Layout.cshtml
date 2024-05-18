@@ -20,7 +20,7 @@
         <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
         <!-- Centered logo -->
         <div class="text-center logo-container">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Employee">
                 <br />
 
                 <img src="https://i.ibb.co/1Mr4GfG/Group.png" alt="Logo" style="max-height: 50px;">
@@ -74,14 +74,12 @@
         <!-- User box at the bottom -->
         <div class="horizontal-divider"></div>
         <div class="user-box">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Logo" class="user-logo">
-            <div class="user-info">
-                <a class="user-name" asp-controller="Users" asp-action="details" asp-route-id="Enployeenumber">Info<i class="bi bi-pencil"></i> </a>
-                
-            </div>
-            <div class="vertical-divider"></div>
+         
+           
             <a class="logout-btn" asp-area="" asp-controller="Users" asp-action="Logout">
                 <i class="bi bi-box-arrow-right"></i> <!-- Bootstrap logout icon -->
+            
+            <span class="hover-box">Logout</span>
             </a>
         </div>
     </div>
@@ -160,7 +158,7 @@
 
         /* Style for the button that opens the sidebar */
         .openbtn {
-            font-size: 20px;
+            font-size: 30px;
             cursor: pointer;
             background-color: #111;
             color: white;
@@ -169,7 +167,10 @@
         }
 
             .openbtn:hover {
-                background-color: #444;
+                background-color: white;
+                color: black;
+                transition-duration: 0.4s;
+               
             }
 
         /* Style the main content */
@@ -211,6 +212,17 @@
             padding: 10px;
             margin-top: auto;
             background-color: white;
+        }
+
+            .user-box:hover {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-top: auto;
+                background-color: #565D66;
+            color: white;
+            transition-duration: 0.4s;
+
         }
 
         .user-logo {
@@ -258,7 +270,7 @@
         }
 
             .logout-btn:hover {
-                background-color: red;
+                background-color: ;
                 color: #f1f1f1;
             }
 
@@ -269,7 +281,7 @@
         }
 
             .hover-box:hover {
-                color: #ccc; /* Text color on hover */
+                color: white; /* Text color on hover */
             }
 
                 .hover-box:hover::before {
@@ -283,7 +295,7 @@
                     background-color: #9152f8; /* Color of the box */
                     border-radius: 15px; /* Make it round */
                     z-index: -1; /* Ensure it's behind the text */
-                    transition: background-color 0.3s, border-radius 0.3s; /* Smooth transition for background color and border radius */
+                    transition: background-color 0.5s, border-radius 0.3s; /* Smooth transition for background color and border radius */
                 }
             
     </style>

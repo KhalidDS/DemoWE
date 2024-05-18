@@ -38,7 +38,9 @@ namespace DemoWE.Controllers
             await HttpContext.Session.LoadAsync();
             string role = HttpContext.Session.GetString("Role");
             int roleInt = Convert.ToInt32(role);
-            
+            var li = await _context.User.ToListAsync();
+            ViewBag.At = li;
+            ViewBag.Role = roleInt;
 
             IQueryable<Request> requests;
 

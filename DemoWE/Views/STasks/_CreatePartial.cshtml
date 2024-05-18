@@ -1,7 +1,27 @@
 ﻿@model DemoWE.Models.STask
 <head>
-
-
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    <!--===============================================================================================-->
 
 
 
@@ -11,48 +31,47 @@
     
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="form-group">
-        <label asp-for="TaskTitle" class="control-label"></label>
+    <div class="wrap-input100 validate-input">
+        <label asp-for="TaskTitle" class="control-label">Task Title</label>
         <input asp-for="TaskTitle" class="form-control" />
         <span asp-validation-for="TaskTitle" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="wrap-input100 validate-input">
+        <label asp-for="TaskDescription" class="control-label">Task Description</label>
+        <input asp-for="TaskDescription" class="form-control" />
+        <span asp-validation-for="TaskDescription" class="text-danger"></span>
+    </div>
+
+    <div class="wrap-input100 validate-input">
         <label asp-for="Priority" class="control-label"></label>
         <select asp-for="Priority" asp-items="Html.GetEnumSelectList<PriorityLevel>()" class="form-control">
             <option value="">-- Select Priority --</option>
         </select>
         <span asp-validation-for="Priority" class="text-danger"></span>
     </div>
-
-    <div class="form-group">
-        <label asp-for="TaskDescription" class="control-label"></label>
-        <input asp-for="TaskDescription" class="form-control" />
-        <span asp-validation-for="TaskDescription" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="AssignedTo" class="control-label"></label>
+    <div class="wrap-input100 validate-input">
+        <label asp-for="AssignedTo" class="control-label">Assigned To</label>
         <div id="assignedToContainer">
             <select asp-for="AssignedTo" class="form-control">
                 <option value="">-- Select Employee --</option>
                 @foreach (User t in ViewBag.dt)
                 {
-                    <option value="@t.EmployeeNumber">@t.Username</option>
+                    <option value="@t.EmployeeNumber">@t.FirstName</option>
                 }
             </select>
         </div>
-        <button type="button" id="addAssignedTo" class="btn btn-primary">Add</button>
+       
         <span asp-validation-for="AssignedTo" class="text-danger"></span>
     </div>
      
-    <div class="form-group">
-        <label asp-for="sfile" class="control-label"></label>
+    <div class="wrap-input100 validate-input">
+        <label asp-for="sfile" class="control-label">file</label>
         <input type="file" id="sfile" class="form-control" name="sfile" />
         <span asp-validation-for="sfile" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="wrap-input100 validate-input">
         <label asp-for="StartDate" class="control-label"></label>
         <div class="input-group">
             <input asp-for="StartDate" class="form-control" type="date" value="" />
@@ -66,7 +85,7 @@
         <span asp-validation-for="StartDate" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
+    <div class="wrap-input100 validate-input">
         <label asp-for="Deadline" class="control-label"></label>
         <div class="input-group">
             <input asp-for="Deadline" class="form-control" type="date" value="" />

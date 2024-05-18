@@ -36,22 +36,22 @@
         <div class="col-md-12">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h4 class="card-title mb-0">@Html.DisplayFor(model => model.TaskTitle)</h4>
+                    <h4 class="card-title mb-0">Task Title</h4>
                    
                 </div>
                 <div class="card-body">
-                    <p>@Html.DisplayFor(model => model.TaskDescription)</p>
+                    <p>Task Description</p>
                     <dl class="row">
                         <div class="col-sm-6">
                             <dt>Status</dt>
                             <dd>@Html.DisplayFor(model => model.Status)</dd>
-                            <dt>StartDate</dt>
+                            <dt>Start Date</dt>
                             <dd>@Model.StartDate.ToShortDateString()</dd>
                             <dt>Deadline</dt>
                             <dd>@Model.Deadline.ToShortDateString()</dd>
                         </div>
                         <div class="col-sm-6">
-                            <dt>CreatedBy</dt>
+                            <dt>From</dt>
                             @foreach (var t in ViewBag.At)
                             {
                                 if (t.EmployeeNumber == Model.CreatedBy)
@@ -59,7 +59,7 @@
                                     <dd>@t.FirstName</dd>
                                 }
                             }
-                            <dt>AssignedTo</dt>
+                            <dt>Assigned To</dt>
                             @foreach (var t in ViewBag.At)
                             {
                                 if (t.EmployeeNumber == Model.AssignedTo)
