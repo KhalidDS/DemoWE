@@ -11,55 +11,127 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 <style>
-    .card-body {
-        margin-bottom: 20px;
+    * {
+        margin: 0;
+        padding: 0;
+        outline: 0;
+        box-sizing: border-box;
     }
 
-    dl.row {
-        display: flex;
-        flex-wrap: wrap;
+    .container-fluid {
+        position: relative;
+        z-index: 2;
     }
 
-        dl.row dt,
-        dl.row dd {
-            flex-basis: 50%;
-            padding: 10px;
+    .row {
+        margin: 0;
+        padding: 0;
+    }
+
+    .card {
+        box-shadow: 0 2px 15px rgba(64, 64, 64, .7);
+        border-radius: 15px;
+        background: white;
+        padding: 20px;
+        font-family: 'Montserrat', sans-serif;
+        color: #ffffff;
+        transition: transform 0.3s;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
         }
+
+    .card-header {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .card-title {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
+        font-size: 24px;
+        color: purple; /* Highlight color */
+        margin-bottom: 10px;
+    }
+
+    .card-description {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+        font-size: 18px;
+        color: black;
+    }
+
+    dt {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 600;
+        color: purple; /* Highlight color */
+        text-transform: uppercase;
+    }
+
+    dd {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+        color: black;
+        margin-left: 0;
+        margin-bottom: 15px;
+    }
+
+    dl {
+        margin-bottom: 0;
+    }
+
+    .col-sm-6 dl {
+        margin-bottom: 15px;
+    }
+
+    .col-md-6 {
+        padding: 0;
+    }
 </style>
 
 <div class="container-fluid">
-    <h1>
-        @ViewData["UserRole"]
-        @ViewData["Userid"]
-    </h1>
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row justify-content-center">
+        <div class="col-md-14">
             <div class="card mb-4">
-                <div class="card-header">
-                    <h4 class="card-title mb-0">Task Title</h4>
-                   
-                </div>
-                <div class="card-body">
-                    <p>Task Description</p>
-                    <dl class="row">
-                        <div class="col-sm-6">
-                            <dt>Status</dt>
-                            <dd>@Html.DisplayFor(model => model.Status)</dd>
-                            <dt>Start Date</dt>
-                            <dd>@Model.StartDate.ToShortDateString()</dd>
-                            <dt>Deadline</dt>
-                            <dd>@Model.Deadline.ToShortDateString()</dd>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="flex-grow-1">
+                        <div class="col-sm-12">
+                            <dl>
+                                <dt>Task Title</dt>
+                                <dd>@Html.DisplayFor(model => model.TaskTitle)</dd>
+                            </dl>
                         </div>
-                        <div class="col-sm-6">
-                            <dt>From</dt>
-                            @foreach (var t in ViewBag.At)
-                            {
-                                if (t.EmployeeNumber == Model.CreatedBy)
+
+                        <div class="col-sm-12">
+                            <dl>
+                                <dt>Task Description: </dt>
+                                <dd>@Html.DisplayFor(model => model.TaskDescription)</dd>
+                            </dl>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="row">
+                   
+                    <div class="col-sm-6">
+                        <dl>
+                               
+                            <dt>Created by: </dt>
+                                @foreach (var t in ViewBag.At)
                                 {
-                                    <dd>@t.FirstName</dd>
+                                    if (t.EmployeeNumber == Model.CreatedBy)
+                                    {
+                                        <dd>@t.FirstName</dd>
+                                    }
                                 }
-                            }
-                            <dt>Assigned To</dt>
+                            
+                        </dl>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <dl>
+                            <dt>Assaigned To: </dt>
                             @foreach (var t in ViewBag.At)
                             {
                                 if (t.EmployeeNumber == Model.AssignedTo)
@@ -67,44 +139,73 @@
                                     <dd>@t.FirstName</dd>
                                 }
                             }
-                            <dt>Priority</dt>
+                        </dl>
+                    </div>
+                    </div>
+                <div class="row">
+                <div class="col-sm-6">
+                        <dl>
+                            <dt>Priority: </dt>
                             <dd>@Html.DisplayFor(model => model.Priority)</dd>
-                        </div>
-                        <div>
-                            <h4 class="card-title mb-0"> Uploaded files</h4>
-                            <dd>@Html.DisplayFor(model => model.sfile)</dd>
-                        </div>
-                    </dl>
-                </div>
-                <div class="card-footer">
+                        </dl>
+                    </div>
+                
+                
+                    <div class="col-sm-6">
+                        <dl>
+                            <dt>Status: </dt>
+                            <dd>@Html.DisplayFor(model => model.Status)</dd>
+                        </dl>
+                      
+                    </div>
+                    <div class="col-sm-6">
+                        <dl>
+                            <dt>Start Date: </dt>
+                            <dd>@Model.StartDate.ToShortDateString()</dd>
+                        </dl>
+                    </div>
+                    <div class="col-sm-4">
+                        <dl>
+                            <dt>Deadline: </dt>
+                            <dd>@Model.Deadline.ToShortDateString()</dd>
+                        </dl>
 
-                    @if ((ViewBag.user == Model.CreatedBy) || (ViewBag.user != Model.AssignedTo))
-                    {
-                        <div class="button-group">
-                            <button id="completeButton" data-task-id="@Model.TaskID" class="btn btn-primary">Complete</button>
-                            <button id="declineButton" data-task-id="@Model.TaskID" class="btn btn-danger">Decline</button>
-                        </div>
-                    }
-                    else if ((Model.Status == Status.Completed))
-                    {
-                        
-                    }
-                    else
-                    {
-                        <div class="button-group">
-                            <button id="confirmButton" data-task-id="@Model.TaskID" class="btn btn-success">Confirm</button>
-                        </div>
-                    }
+
+                    </div>
+                </div>
+                <div class="button-group">
+                @if ((ViewBag.user == Model.CreatedBy) || (ViewBag.user != Model.AssignedTo))
+                {
                     
-                  
+                        <button id="completeButton" data-task-id="@Model.TaskID" class="btn btn-primary">Complete</button>
+                        <button id="declineButton" data-task-id="@Model.TaskID" class="btn btn-danger">Decline</button>
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    }
+                else if ((Model.Status == Status.Completed))
+                {
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    }
+                else
+                {
+                   
+                        <button id="confirmButton" data-task-id="@Model.TaskID" class="btn btn-success">Confirm</button>
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a> 
+                    
+                }
+                </div>
                 </div>
             </div>
         </div>
+       
+
     </div>
-</div>
+
+
+             
+ 
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    
 </div>
 
 @section Scripts {

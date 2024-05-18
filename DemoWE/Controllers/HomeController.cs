@@ -98,10 +98,10 @@ namespace DemoWE.Controllers
             DepartmentName = departmentName?.DepartmentName ?? string.Empty;
 
             // Count the number of tasks with status "New" or "InProgress" assigned to the user
-            int EscalatedRequestCount = await _context.Request
+            var EscalatedRequestCount = await _context.Request
            .Where(x => x.Status == Status.Escalated)
            .CountAsync();
-
+           
             ViewBag.EscalatedRequestCount = EscalatedRequestCount;
 
 
