@@ -127,21 +127,21 @@ namespace DemoWE.Controllers
 
             // Retrieve task titles
             List<string> labels = _context.STask
-                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null) 
+                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.Completed) && x.project_id == null) 
                 .Select(x => x.TaskTitle)
                 .ToList();
             Data.Add(labels);
 
             // Retrieve start dates
             List<DateTime> StartDate = _context.STask
-                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null) 
+                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.Completed) && x.project_id == null) 
                 .Select(x => x.StartDate.Date)
                 .ToList();
             Data.Add(StartDate);
 
             // Retrieve deadlines
             List<DateTime> Deadline = _context.STask
-                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null) 
+                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.Completed) && x.project_id == null) 
                 .Select(x => x.Deadline.Date)
                 .ToList();
             Data.Add(Deadline);
