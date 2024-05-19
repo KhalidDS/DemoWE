@@ -35,6 +35,9 @@ namespace DemoWE.Controllers
             string username = HttpContext.Session.GetString("Username") ?? string.Empty;
             ViewBag.name = username;
 
+            var user = await _context.User.FirstOrDefaultAsync(t => t.Username == username);
+            ViewBag.fn= user?.FirstName ?? string.Empty;
+
             // Retrieve email from session
             await HttpContext.Session.LoadAsync();
             string email = HttpContext.Session.GetString("Email") ?? string.Empty;
@@ -55,7 +58,7 @@ namespace DemoWE.Controllers
 
             // Count the number of tasks with status "New" or "InProgress" assigned to the user
             int newOrInProgressCount = await _context.STask
-            .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.InProgress) && x.project_id == null)
+            .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.Confirm) && x.project_id == null)
             .CountAsync();
 
             // Pass the count to the view
@@ -127,21 +130,21 @@ namespace DemoWE.Controllers
 
             // Retrieve task titles
             List<string> labels = _context.STask
-                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.Completed) && x.project_id == null) 
+                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.Confirm) && x.project_id == null) 
                 .Select(x => x.TaskTitle)
                 .ToList();
             Data.Add(labels);
 
             // Retrieve start dates
             List<DateTime> StartDate = _context.STask
-                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.Completed) && x.project_id == null) 
+                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.Confirm) && x.project_id == null) 
                 .Select(x => x.StartDate.Date)
                 .ToList();
             Data.Add(StartDate);
 
             // Retrieve deadlines
             List<DateTime> Deadline = _context.STask
-                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.Completed) && x.project_id == null) 
+                .Where(x => x.AssignedTo == userIdInt && (x.Status == 0 || x.Status == Status.Confirm) && x.project_id == null) 
                 .Select(x => x.Deadline.Date)
                 .ToList();
             Data.Add(Deadline);
